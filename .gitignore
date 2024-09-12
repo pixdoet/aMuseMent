@@ -1,3 +1,8 @@
+# test & playlist files
+PL*/
+test*
+saves*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

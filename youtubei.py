@@ -51,23 +51,26 @@ def request_browse(browseId: str):
 
 def thumbnail_treatment(thumbnailLink):
     """
-    treatment for small thumbnail sizes
+    treatment for thumbnails to upscale to 1024p or smth
     """
     if len(thumbnailLink.split("=")) != 2:
         return thumbnailLink
     else:
         oriThumbnail = thumbnailLink.split("=")[0]
-        newThumb = f"{oriThumbnail}=w720"
+        newThumb = f"{oriThumbnail}=w1024"
         return newThumb
 
 
 # PLmWlbzfaYIsSFQRQtKAGKWg4xv-CYhqLM
 def parse_youtubei(ytResponse):
-    n = ytResponse.json()
+    """
+    parse the youtubei info and return list of song metadata
+    """
+    resp = ytResponse.json()
 
     playlistItems = []
 
-    for i in n["contents"]["twoColumnBrowseResultsRenderer"]["secondaryContents"][
+    for i in resp["contents"]["twoColumnBrowseResultsRenderer"]["secondaryContents"][
         "sectionListRenderer"
     ]["contents"][0]["musicPlaylistShelfRenderer"]["contents"]:
         currentVidId = i["musicResponsiveListItemRenderer"]["playlistItemData"][
@@ -113,13 +116,11 @@ def parse_youtubei(ytResponse):
 
         songInfoDict = {
             "id": currentVidId,
-            "songInfo": {
-                "title": currentSongTitle,
-                "author": currentSongAuthor,
-                "album": currentSongAlbum,
-                "thumbnail": currentThumbnail,
-                "isYtmSong": True,
-            },
+            "title": currentSongTitle,
+            "artist": currentSongAuthor,
+            "album": currentSongAlbum,
+            "thumbnail": currentThumbnail,
+            "isYtmSong": True,
         }
         playlistItems.append(songInfoDict)
 
@@ -127,6 +128,6 @@ def parse_youtubei(ytResponse):
 
 
 # testing!
-tc = parse_youtubei(request_browse(browseId="PLmWlbzfaYIsSFQRQtKAGKWg4xv-CYhqLM"))
-for a in tc:
-    print(a["songInfo"]["thumbnail"])
+# tc = parse_youtubei(request_browse(browseId="PLwkDqdjdOosFYPXv-v3n861GnmOImt1Ki"))
+# for a in tc:
+#    print(a["songInfo"]["thumbnail"])
