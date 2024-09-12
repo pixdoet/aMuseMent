@@ -11,6 +11,8 @@ Run. `python3.10 main.py`
 
 The script will ask you for a playlist URL / ID. Currently only supports playlist IDs starting with PL (normal playlists), this might change in the future.
 
+Downloaded songs are saved in `./saves/{playlist id}/`. Song metadata and album art is already present.
+
 ## TODO
 - Add to iTunes functionality for Windows / Mac
 - CLI options
