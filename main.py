@@ -5,6 +5,48 @@ import tags
 import os
 
 
+def playlist_cleaner(playlistUrl: str):
+    """
+    returns clean playlist id from url and playlist types
+
+    types: album, normal playlist, radio playlist
+    """
+    if len(playlistUrl.split("list=")) <= 1:
+        if playlistUrl.startswith("PL"):
+            if len(playlistUrl) == 34:
+                playlistId = playlistUrl
+                playlistType = "playlist"
+            else:
+                print("Wrong playlist id? Normal playlists need to have 34 characters")
+                exit()
+
+        elif playlistUrl.startswith("OLAK"):
+            if len(playlistUrl) == 41:
+                playlistId = playlistUrl
+                playlistType = "album"
+            else:
+                print("Wrong album id? Normal albums need to have 41 characters")
+                exit()
+
+        elif playlistUrl.startswith("RD"):
+            if len(playlistUrl) == 43:
+                playlistId = playlistUrl
+                playlistType = "radio playlist"
+            else:
+                print("Wrong radio id? Normal radios need to have 43 characters")
+                exit()
+
+        else:
+            print("No valid playlist url/ID!")
+            exit()
+    else:
+        playlistUrlParse = playlistId.split("list=")
+        playlistId = playlistUrlParse[1]
+
+    playlistInfo = {"id": playlistId, "type": playlistType}
+    return playlistInfo
+
+
 def main():
     playlist_url = input("Enter playlist url: ")
 
@@ -14,22 +56,12 @@ def main():
     if playlist doesn't split with list=, it's probably not something u like
     BUT it might be a playlist id, if it starts with PL and has 34 chars
     """
-    if len(playlist_url.split("list=")) <= 1:
-        if playlist_url.startswith("PL"):
-            if len(playlist_url) == 34:
-                playlistId = playlist_url
-            else:
-                print(
-                    "Wrong playlist id? Currently only supports normal playlists that start with PL"
-                )
-        else:
-            print("Not valid playlist url/ID!")
-            exit()
-    else:
-        playlistUrlParse = playlist_url.split("list=")
-        playlistId = playlistUrlParse[1]
+    playlistInfo = playlist_cleaner(playlistUrl=playlist_url)
 
-    print(f"Downloading: playlist id {playlistId}")
+    playlistId = playlistInfo["id"]
+    playlistType = playlistInfo["type"]
+
+    print(f"Downloading {playlistType} with id {playlistId}")
 
     # fetch songs
     browseResponse = youtubei.request_browse(browseId=playlistId)
@@ -38,7 +70,9 @@ def main():
     print("List of songs: ")
     parsedResponse = youtubei.parse_youtubei(browseResponse)
 
-    # individual treatments
+    print("---------------------------------------")
+
+    # individual song treatments
     for currentSong in parsedResponse:
         songId = currentSong["id"]
 
@@ -48,7 +82,7 @@ def main():
         songAlbum = currentSong["album"]
         songThumbnailUrl = currentSong["thumbnail"]
         print(
-            f"vID: {songId} | Title: {songTitle} | Author: {songArtist} | Album: {songAlbum}"
+            f"Video ID: {songId} | Title: {songTitle} | Author: {songArtist} | Album: {songAlbum}"
         )
 
         # download

@@ -1,5 +1,10 @@
 import requests
-import os
+import config
+
+configData = config.load_config()
+
+PLACEHOLDER_WHEN_NO_ALBUM = configData["download_options"]["placeholder_when_no_album"]
+NO_ALBUM_PLACEHOLDER_TEXT = configData["download_options"]["no_album_placeholder_text"]
 
 
 def request_browse(browseId: str):
@@ -90,12 +95,15 @@ def parse_youtubei(ytResponse):
             "musicResponsiveListItemFlexColumnRenderer"
         ]["text"]
 
-        # check if song name exist, if not use vid info
+        # check if song album exist, if not use vid info
         if len(songAlbumAccessor) <= 0:
             # not a song!
             currentSongTitle = songTitleAccessor["runs"][0]["text"]
             currentSongAuthor = songAuthorAccessor["runs"][0]["text"]
-            currentSongAlbum = "unknown - not a song!"
+            if PLACEHOLDER_WHEN_NO_ALBUM:
+                currentSongAlbum = NO_ALBUM_PLACEHOLDER_TEXT
+            else:
+                currentSongAlbum = ""
 
         else:
             # is a song
