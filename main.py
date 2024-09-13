@@ -7,9 +7,12 @@ import os
 
 def playlist_cleaner(playlistUrl: str):
     """
-    returns clean playlist id from url and playlist types
+    playlist url safety check!
 
-    types: album, normal playlist, radio playlist
+    if playlist doesn't split with list=, it's probably not something u like
+
+    BUT there are specific IDs that we can use, PL, OLAK and RD
+
     """
     if len(playlistUrl.split("list=")) <= 1:
         if playlistUrl.startswith("PL"):
@@ -50,12 +53,6 @@ def playlist_cleaner(playlistUrl: str):
 def main():
     playlist_url = input("Enter playlist url: ")
 
-    """
-    playlist url safety check!
-
-    if playlist doesn't split with list=, it's probably not something u like
-    BUT it might be a playlist id, if it starts with PL and has 34 chars
-    """
     playlistInfo = playlist_cleaner(playlistUrl=playlist_url)
 
     playlistId = playlistInfo["id"]
