@@ -1,3 +1,11 @@
+"""
+    aMuseMent - YTM to iTunes/AM conversion tool
+    Fully fledged with metadata!
+
+    (C) 2024 Ian Hiew - pixdo.et at gmail.com
+"""
+
+# local imporT
 import youtubei
 import download
 import tags

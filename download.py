@@ -1,3 +1,7 @@
+"""
+    download.py - Wrapper function for yt_dlp to download videos
+"""
+
 import yt_dlp
 
 
@@ -17,6 +21,3 @@ def download_song(id, playlistId):
         }
     ) as video:
         video.download(id)
-
-
-# download_song("DxpndDEAqGk")

@@ -1,3 +1,7 @@
+"""
+    tags.py - Tags the mp3 folders with info from YouTube Music
+"""
+
 import eyed3
 import urllib.request
 import os
@@ -16,14 +20,3 @@ def add_metadata(filePath, songTitle, songArtist, songAlbum, songThumbnailUrl):
         currentSongFile.tag.save()
     else:
         print(f"No such file found on {filePath} !")
-
-
-"""
-add_metadata(
-    "./test.mp3",
-    "x",
-    "y",
-    "z",
-    "https://lh3.googleusercontent.com/nAdmLnzWr-ZEV3bjzraE3YGFF36B2bhgUn7_AV9b4Ym_2Dy5xK2-aZxQVxFrQwuArQDeTdlFAlApr2M=w720",
-)
-"""

@@ -1,4 +1,7 @@
-"""TODO"""
+"""
+    TODO
+    itunes.py - Add downloaded files to "Automatically add to iTunes" folder or smth
+"""
 
 import shutil
 
