@@ -45,6 +45,7 @@ def playlist_cleaner(playlistUrl: str):
     else:
         playlistUrlParse = playlistId.split("list=")
         playlistId = playlistUrlParse[1]
+        playlistType = "playlist link"
 
     playlistInfo = {"id": playlistId, "type": playlistType}
     return playlistInfo
