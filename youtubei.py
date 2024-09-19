@@ -1,3 +1,7 @@
+"""
+    youtubei.py - requests youtubei for music info
+"""
+
 import requests
 import config
 
@@ -24,7 +28,6 @@ def request_browse(browseId: str):
                     "clientVersion": "1.20240909.01.00",
                     "originalUrl": "https://music.youtube.com/",
                 },
-                # "user": {"lockedSafetyMode": False},
             },
             "browseId": f"VL{browseId}",
         },
@@ -44,7 +47,6 @@ def thumbnail_treatment(thumbnailLink):
         return newThumb
 
 
-# PLmWlbzfaYIsSFQRQtKAGKWg4xv-CYhqLM
 def parse_youtubei(ytResponse):
     """
     parse the youtubei info and return list of song metadata
@@ -111,9 +113,3 @@ def parse_youtubei(ytResponse):
         playlistItems.append(songInfoDict)
 
     return playlistItems
-
-
-# testing!
-# tc = parse_youtubei(request_browse(browseId="PLwkDqdjdOosFYPXv-v3n861GnmOImt1Ki"))
-# for a in tc:
-#    print(a["songInfo"]["thumbnail"])

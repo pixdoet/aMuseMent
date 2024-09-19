@@ -2,6 +2,7 @@
     "download_options": {
         "placeholder_when_no_album": true,
         "no_album_placeholder_text": "unknown - no such metadata!",
-        "use_playlist_id_for_folder_name": true
+        "use_playlist_id_for_folder_name": true,
+        "add_to_itunes": false
     }
 }
