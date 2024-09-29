@@ -3,8 +3,60 @@
     itunes.py - Add downloaded files to "Automatically add to iTunes" folder or smth
 """
 
+import os
+import sys
+import pathlib
 import shutil
 
+import config
 
-def copy_all(playlistId):
+configData = config.load_config()
+configData = configData["itunes_options"]
+
+homeDir = pathlib.Path.home()
+amFolder = f"{homeDir}{configData['darwin']['am_folder']}"
+amAlt = f"{homeDir}{configData['darwin']['am_folder_alt']}"
+itunesFolder = f"{homeDir}{configData['darwin']['itunes_folder']}"
+
+
+def check_os_version():
+    if sys.platform == "darwin":
+        return "darwin"
+    elif sys.platform == "win32" or sys.platform == "cygwin":
+        print("Add to iTunes/Music is coming to Windows soon! Thanks for supporting :)")
+        print("Songs still downloaded to ./saves/{playlist id}")
+        return "win32"
+    else:
+        return "other"
+
+
+def use_am():
+    if os.path.isdir(amFolder) or os.path.isdir(amAlt):
+        print("Adding songs to Apple Music")
+        return True
+    elif os.path.isdir(itunesFolder):
+        print("Adding songs to iTunes")
+        return False
+    else:
+        print("No iTunes or Apple Music folder found!")
+        print("Ensure these paths exist on your system: ")
+        print(f"iTunes: {itunesFolder}")
+        print(f"Apple Music: {amFolder} or {amAlt}")
+        exit()
+
+
+def add_to_itunes(playlistId, osVersion):
+    # check am usage
+    useAm = use_am()
+    if useAm:
+        finalDir = amFolder
+        musicService = "Apple Music"
+    else:
+        finalDir = itunesFolder
+        musicService = "iTunes"
+
+    localSaveDir = f"./saves/{playlistId}"
+    print(f"Will copy folder {localSaveDir} to {finalDir}")
+    shutil.copytree(localSaveDir, finalDir, dirs_exist_ok=True)
+    print(f"Done! Open {musicService} and your songs should be there!")
     return 0

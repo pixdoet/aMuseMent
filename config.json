@@ -2,7 +2,14 @@
     "download_options": {
         "placeholder_when_no_album": true,
         "no_album_placeholder_text": "unknown - no such metadata!",
-        "use_playlist_id_for_folder_name": true,
-        "add_to_itunes": false
+        "use_playlist_id_for_folder_name": true
+    },
+    "itunes_options": {
+        "add_to_itunes": true,
+        "darwin": {
+            "itunes_folder": "/iTunes/iTunes Media/Automatically Add to iTunes",
+            "am_folder": "/Music/Music/Media.localized/Automatically Add to Music.localized",
+            "am_folder_alt": "/Music/Music/Media/Automatically Add to Music"
+        }
     }
 }

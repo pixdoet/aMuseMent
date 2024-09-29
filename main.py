@@ -10,8 +10,12 @@ import youtubei
 import download
 import tags
 import playlist
+import config
+import itunes
 
 import os
+
+configData = config.load_config()
 
 
 def main():
@@ -64,6 +68,20 @@ def main():
             f"./saves/{playlistId}/{songId}.mp3",
             f"./saves/{playlistId}/{songTitle}.mp3",
         )
+
+    # add to itunes
+    if configData["itunes_options"]["add_to_itunes"]:
+        osVersion = itunes.check_os_version()
+
+        if osVersion == "darwin" or osVersion == "win32":
+            if osVersion == "darwin":
+                itunes.add_to_itunes(playlistId=playlistId, osVersion="darwin")
+            else:
+                None
+
+        else:
+            print("Device does not support iTunes/Apple Music! Exiting now...")
+            exit()
 
     print(f"Finished! Files can be found at ./saves/{playlistId}/")
 
