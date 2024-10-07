@@ -1,5 +1,4 @@
 """
-    TODO
     itunes.py - Add downloaded files to "Automatically add to iTunes" folder or smth
 """
 
@@ -13,13 +12,18 @@ import config
 configData = config.load_config()
 configData = configData["itunes_options"]
 
+# grab home directory
 homeDir = pathlib.Path.home()
+# get am directory
 amFolder = f"{homeDir}{configData['darwin']['am_folder']}"
 amAlt = f"{homeDir}{configData['darwin']['am_folder_alt']}"
 itunesFolder = f"{homeDir}{configData['darwin']['itunes_folder']}"
 
 
 def check_os_version():
+    """
+    check_os_version: self explanatory, used to determine file paths
+    """
     if sys.platform == "darwin":
         return "darwin"
     elif sys.platform == "win32" or sys.platform == "cygwin":
@@ -31,6 +35,11 @@ def check_os_version():
 
 
 def use_am():
+    """
+    use_am: check for apple music usage (uses different dir)
+
+    Doubles as safety check for if iTunes folder exists
+    """
     if os.path.isdir(amFolder) or os.path.isdir(amAlt):
         print("Adding songs to Apple Music")
         return True
@@ -38,7 +47,7 @@ def use_am():
         print("Adding songs to iTunes")
         return False
     else:
-        print("No iTunes or Apple Music folder found!")
+        print("No valid iTunes or Apple Music folder found!")
         print("Ensure these paths exist on your system: ")
         print(f"iTunes: {itunesFolder}")
         print(f"Apple Music: {amFolder} or {amAlt}")
@@ -46,7 +55,10 @@ def use_am():
 
 
 def add_to_itunes(playlistId, osVersion):
-    # check am usage
+    """
+    add_to_itunes: main function to copy local downloaded files to iTunes/AM Directory
+    """
+    # check AM usage
     useAm = use_am()
     if useAm:
         finalDir = amFolder
@@ -57,6 +69,13 @@ def add_to_itunes(playlistId, osVersion):
 
     localSaveDir = f"./saves/{playlistId}"
     print(f"Will copy folder {localSaveDir} to {finalDir}")
-    shutil.copytree(localSaveDir, finalDir, dirs_exist_ok=True)
+
+    # copy files
+    # this should be the different part for osVersion
+    if osVersion == "darwin":
+        shutil.copytree(localSaveDir, finalDir, dirs_exist_ok=True)
+    elif osVersion == "win32" or osVersion == "cygwin":
+        None
+
     print(f"Done! Open {musicService} and your songs should be there!")
     return 0

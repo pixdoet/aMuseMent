@@ -12,6 +12,9 @@ NO_ALBUM_PLACEHOLDER_TEXT = configData["download_options"]["no_album_placeholder
 
 
 def request_browse(browseId: str):
+    """
+    request_browse: requests youtubei browse for raw data
+    """
     r = requests.post(
         url="https://music.youtube.com/youtubei/v1/browse",
         headers={
@@ -37,7 +40,7 @@ def request_browse(browseId: str):
 
 def thumbnail_treatment(thumbnailLink):
     """
-    treatment for thumbnails to upscale to 1024p or smth
+    thumbnail_treatment: change thumbnail url to upscale to 1024p
     """
     if len(thumbnailLink.split("=")) != 2:
         return thumbnailLink
@@ -49,7 +52,7 @@ def thumbnail_treatment(thumbnailLink):
 
 def parse_youtubei(ytResponse):
     """
-    parse the youtubei info and return list of song metadata
+    parse_youtubei: parse the youtubei info and return list of song metadata
     """
     resp = ytResponse.json()
 
@@ -61,10 +64,7 @@ def parse_youtubei(ytResponse):
         currentVidId = i["musicResponsiveListItemRenderer"]["playlistItemData"][
             "videoId"
         ]
-        # print(currentVidId)
-
         # start getting info
-
         songTitleAccessor = i["musicResponsiveListItemRenderer"]["flexColumns"][0][
             "musicResponsiveListItemFlexColumnRenderer"
         ]["text"]
@@ -97,7 +97,7 @@ def parse_youtubei(ytResponse):
             ]["thumbnails"][0]["url"]
         )
 
-        # print data
+        # print data (redundant?)
         print(
             f"vID: {currentVidId} | Title: {currentSongTitle} | Author: {currentSongAuthor} | Album: {currentSongAlbum}"
         )

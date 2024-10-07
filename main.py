@@ -73,7 +73,7 @@ def main():
     if configData["itunes_options"]["add_to_itunes"]:
         osVersion = itunes.check_os_version()
 
-        if osVersion == "darwin" or osVersion == "win32":
+        if osVersion == "darwin" or osVersion == "win32" or osVersion == "cygwin":
             if osVersion == "darwin":
                 itunes.add_to_itunes(playlistId=playlistId, osVersion="darwin")
             else:
