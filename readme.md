@@ -12,7 +12,7 @@
 ## Usage
 Run `python3.10 main.py`
 
-The script will ask you for a playlist URL / ID. Currently only supports playlist IDs starting with PL (normal playlists), RD(radio) and OLAK(albums)
+The script will ask you for a playlist URL / ID. Currently only supports playlist IDs starting with PL(normal playlists), RD(radio) and OLAK(albums)
 
 Downloaded songs are saved in `./saves/{playlist id}/`. Song metadata and album art is already present.
 

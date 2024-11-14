@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """
     aMuseMent - YTM to iTunes/AM conversion tool
     Fully fledged with metadata!
@@ -6,19 +8,21 @@
 """
 
 # local imporT
-import youtubei
-import download
-import tags
-import playlist
+import arguments
 import config
+import download
 import itunes
+import playlist
+import tags
+import youtubei
 
 import os
+import sys
 
 configData = config.load_config()
 
 
-def main():
+def main_download():
     playlist_url = input("Enter playlist url: ")
 
     playlistInfo = playlist.playlist_cleaner(playlistUrl=playlist_url)
@@ -84,6 +88,16 @@ def main():
             exit()
 
     print(f"Finished! Files can be found at ./saves/{playlistId}/")
+
+
+def main():
+    args = arguments.parser.parse_args()
+    if len(sys.argv) <= 1:
+        print("gay as shiT")
+        main_download()
+    elif args.clean_saves:
+        print("Clean saves?")
+        exit()
 
 
 if __name__ == "__main__":

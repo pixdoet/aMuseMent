@@ -11,6 +11,7 @@ def download_song(id, playlistId):
 
     TODO - add download options to config.json
     """
+
     with yt_dlp.YoutubeDL(
         {
             "extract_audio": True,
@@ -26,3 +27,4 @@ def download_song(id, playlistId):
         }
     ) as video:
         video.download(id)
+        return True

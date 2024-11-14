@@ -14,7 +14,7 @@
         }
     },
     "itunes_options": {
-        "add_to_itunes": false,
+        "add_to_itunes": true,
         "darwin": {
             "itunes_folder": "/iTunes/iTunes Media/Automatically Add to iTunes",
             "am_folder": "/Music/Music/Media.localized/Automatically Add to Music.localized",
