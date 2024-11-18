@@ -10,6 +10,7 @@
 # local imporT
 import arguments
 import config
+import cleaner
 import download
 import itunes
 import playlist
@@ -96,7 +97,7 @@ def main():
         print("gay as shiT")
         main_download()
     elif args.clean_saves:
-        print("Clean saves?")
+        cleaner.wipe_all()
         exit()
 
 
