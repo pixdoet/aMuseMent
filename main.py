@@ -14,6 +14,7 @@ import cleaner
 import download
 import itunes
 import playlist
+import save_single
 import tags
 import youtubei
 
@@ -94,10 +95,14 @@ def main_download():
 def main():
     args = arguments.parser.parse_args()
     if len(sys.argv) <= 1:
-        print("gay as shiT")
         main_download()
     elif args.clean_saves:
         cleaner.wipe_all()
+        exit()
+    elif args.save_single:
+        print("Downloading in Single mode")
+        songId = input("Enter song ID (no url): ")
+        save_single.save_single_song(songId)
         exit()
 
 
