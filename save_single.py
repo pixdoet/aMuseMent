@@ -95,39 +95,37 @@ def get_song_info(videoId):
     else:
         isYtmSong = False
         if PLACEHOLDER_WHEN_NO_ALBUM:
-            currentSongAlbum = NO_ALBUM_PLACEHOLDER_TEXT
+            noAlbumText = NO_ALBUM_PLACEHOLDER_TEXT
         else:
-            currentSongAlbum = ""
+            noAlbumText = ""
 
     if isYtmSong:
-        # print(songDetails)
-        currentSongTitle = songDetails["title"]["runs"][0]["text"]
-        currentSongAuthor = songDetails["longBylineText"]["runs"][0]["text"]
-        currentSongAlbum = songDetails["longBylineText"]["runs"][2]["text"]
-        currentSongReleasedYear = songDetails["longBylineText"]["runs"][4]["text"]
-        currentThumbnail = thumbnail_treatment(
-            songDetails["thumbnail"]["thumbnails"][0]["url"]
-        )
+        finalSongInfo = {
+            "id": videoId,
+            "title": songDetails["title"]["runs"][0]["text"],
+            "artist": songDetails["longBylineText"]["runs"][0]["text"],
+            "album": songDetails["longBylineText"]["runs"][2]["text"],
+            "releaseTime": songDetails["longBylineText"]["runs"][4]["text"],
+            "thumbnail": thumbnail_treatment(
+                songDetails["thumbnail"]["thumbnails"][0]["url"]
+            ),
+            "isYtmSong": isYtmSong,
+        }
 
     else:
         # use placeholders for non-song
-        currentSongTitle = songDetails["title"]["runs"][0]["text"]
-        currentSongAuthor = songDetails["longBylineText"]["runs"][0]["text"]
-        currentSongAlbum = NO_ALBUM_PLACEHOLDER_TEXT
-        currentSongReleasedYear = "unknown"
-        currentThumbnail = thumbnail_treatment(
-            songDetails["thumbnail"]["thumbnails"][0]["url"]
-        )
+        finalSongInfo = {
+            "id": videoId,
+            "title": songDetails["title"]["runs"][0]["text"],
+            "artist": songDetails["longBylineText"]["runs"][0]["text"],
+            "album": noAlbumText,
+            "releaseTime": "unknown",
+            "thumbnail": thumbnail_treatment(
+                songDetails["thumbnail"]["thumbnails"][0]["url"]
+            ),
+            "isYtmSong": isYtmSong,
+        }
 
-    finalSongInfo = {
-        "id": videoId,
-        "title": currentSongTitle,
-        "artist": currentSongAuthor,
-        "album": currentSongAlbum,
-        "releaseTime": currentSongReleasedYear,
-        "thumbnail": currentThumbnail,
-        "isYtmSong": isYtmSong,
-    }
     return finalSongInfo
 
 
