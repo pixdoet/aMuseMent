@@ -5,12 +5,9 @@ playlist.py - seperated function for checking playlist types
 
 def playlist_cleaner(playlistUrl: str):
     """
-    playlist url safety check!
+    playlist_cleaner: playlist url safety check!
 
-    if playlist doesn't split with list=, it's probably not something u like
-
-    BUT there are specific IDs that we can use, PL, OLAK and RD
-
+    returns playlist id and playlist type
     """
 
     # direct input playlist id

@@ -3,6 +3,7 @@
 """
 
 import json
+import os
 
 
 def load_config():
@@ -10,3 +11,8 @@ def load_config():
         data = json.load(configFile)
 
     return data
+
+
+# has to be here, cannot put into JSON
+# when used must have leading slash!
+DEFAULT_SAVES_PATH = os.path.abspath("./saves/")

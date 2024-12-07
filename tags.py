@@ -7,7 +7,13 @@ import urllib.request
 import os
 
 
-def add_metadata(filePath, songTitle, songArtist, songAlbum, songThumbnailUrl):
+def add_metadata(
+    filePath: str,
+    songTitle: str,
+    songArtist: str,
+    songAlbum: str,
+    songThumbnailUrl: str,
+):
     if os.path.isfile(filePath):
         currentSongFile = eyed3.load(filePath)
         thumbnailData = urllib.request.urlopen(songThumbnailUrl).read()

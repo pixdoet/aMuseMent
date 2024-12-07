@@ -28,7 +28,7 @@ def check_os_version():
         return "darwin"
     elif sys.platform == "win32" or sys.platform == "cygwin":
         print("Add to iTunes/Music is coming to Windows soon! Thanks for supporting :)")
-        print("Songs still downloaded to ./saves/{playlist id}")
+        print("Songs still downloaded to {config.DEFAULT_SAVES_PATH}/{playlist id}")
         return "win32"
     else:
         return "other"
@@ -54,7 +54,7 @@ def use_am():
         exit()
 
 
-def add_to_itunes(playlistId, osVersion):
+def add_to_itunes(playlistId: str, osVersion: str):
     """
     add_to_itunes: main function to copy local downloaded files to iTunes/AM Directory
     """
@@ -67,7 +67,7 @@ def add_to_itunes(playlistId, osVersion):
         finalDir = itunesFolder
         musicService = "iTunes"
 
-    localSaveDir = f"./saves/{playlistId}"
+    localSaveDir = f"{config.DEFAULT_SAVES_PATH}/{playlistId}"
     print(f"Will copy folder {localSaveDir} to {finalDir}")
 
     # copy files

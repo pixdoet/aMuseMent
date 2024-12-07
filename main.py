@@ -18,13 +18,16 @@ import save_single
 import tags
 import youtubei
 
+# global imporT (taxed)
 import os
 import sys
 
 configData = config.load_config()
 
 
+# main download function / default mode
 def main_download():
+    # sanitize playlist url
     playlist_url = input("Enter playlist url: ")
 
     playlistInfo = playlist.playlist_cleaner(playlistUrl=playlist_url)
@@ -62,7 +65,7 @@ def main_download():
 
         # add song meta
         tags.add_metadata(
-            filePath=f"./saves/{playlistId}/{songId}.mp3",
+            filePath=f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songId}.mp3",
             songTitle=songTitle,
             songArtist=songArtist,
             songAlbum=songAlbum,
@@ -71,8 +74,8 @@ def main_download():
 
         # change filename to song title
         os.rename(
-            f"./saves/{playlistId}/{songId}.mp3",
-            f"./saves/{playlistId}/{songTitle}.mp3",
+            f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songId}.mp3",
+            f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songTitle}.mp3",
         )
 
     # add to itunes
@@ -83,22 +86,29 @@ def main_download():
             if osVersion == "darwin":
                 itunes.add_to_itunes(playlistId=playlistId, osVersion="darwin")
             else:
+                # windows moment
                 None
 
         else:
+            # y r u running dis on ur ms dos machine
             print("Device does not support iTunes/Apple Music! Exiting now...")
             exit()
 
-    print(f"Finished! Files can be found at ./saves/{playlistId}/")
+    # get absolute file path
+    print(f"Finished! Files can be found at {config.DEFAULT_SAVES_PATH}/{playlistId}")
 
 
 def main():
     args = arguments.parser.parse_args()
     if len(sys.argv) <= 1:
         main_download()
+
+    # -c --clean_saves
     elif args.clean_saves:
         cleaner.wipe_all()
         exit()
+
+    # -s --save_single
     elif args.save_single:
         print("Downloading in Single mode")
         songId = input("Enter song ID (no url): ")

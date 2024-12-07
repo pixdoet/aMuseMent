@@ -2,13 +2,15 @@
 clean.py - removes files from ./saves directory
 """
 
+import config
+
 import time
 import shutil
 
 
 def wipe_all():
     userAffirmation = input(
-        "Are you sure you want to remove ALL files from ./saves? [yes/no]: "
+        f"Are you sure you want to remove ALL files from {config.DEFAULT_SAVES_PATH}? [yes/no]: "
     )
 
     affirmationSafety = userAffirmation.lower()
@@ -22,8 +24,8 @@ def wipe_all():
         for i in range(5, 0, -1):
             print(i)
             time.sleep(1)
-        shutil.rmtree("./saves")
-        print("All files from ./saves removed!")
+        shutil.rmtree(config.DEFAULT_SAVES_PATH)
+        print(f"All files from {config.DEFAULT_SAVES_PATH} removed!")
 
     elif affirmationSafety == "no":
         print("Operation cancelled")

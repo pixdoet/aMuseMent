@@ -53,7 +53,7 @@ def request_next(videoId: str):
     return r
 
 
-def thumbnail_treatment(thumbnailLink):
+def thumbnail_treatment(thumbnailLink: str):
     """
     thumbnail_treatment: change thumbnail url to upscale to 1024p
     """
@@ -65,7 +65,7 @@ def thumbnail_treatment(thumbnailLink):
         return newThumb
 
 
-def get_song_info(videoId):
+def get_song_info(videoId: str):
     nextData = request_next(videoId=videoId).json()
 
     ytmCheck = nextData["playerOverlays"]["playerOverlayRenderer"][
@@ -144,7 +144,7 @@ def save_single_song(videoId: str):
 
     download.download_song(id=videoId, playlistId="singles")
 
-    downloadedFilePath = f"./saves/singles/{videoId}.mp3"
+    downloadedFilePath = f"{config.DEFAULT_SAVES_PATH}/singles/{videoId}.mp3"
 
     # add metadata
     tags.add_metadata(
@@ -156,7 +156,10 @@ def save_single_song(videoId: str):
     )
 
     # rename song
-    os.rename(f"./saves/singles/{videoId}.mp3", f"./saves/singles/{songTitle}.mp3")
+    os.rename(
+        f"{config.DEFAULT_SAVES_PATH}/singles/{videoId}.mp3",
+        f"{config.DEFAULT_SAVES_PATH}/singles/{songTitle}.mp3",
+    )
     print(f"Finished downloading song: {songTitle}!")
 
 
