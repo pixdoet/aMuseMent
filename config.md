@@ -7,6 +7,10 @@ This is the manual page for different configuration options. A `man` page for `c
 
 Starting now...
 
+## `export_folder`
+Where the songs are going to be downloaded to. Possibly the only thing most people will edit.
+
+--- 
 ## `download_options`
 
 Options for downloading files from YouTube and song metadata
@@ -33,6 +37,11 @@ Options for downloading files from YouTube and song metadata
     `true`: Uses playlist ID as folder name
 
     `false`: Uses playlist title as folder name
+
+---
+
+- ### `open_in_finder_after_download` (bool)
+    Opens folder in Finder/Explorer/File Manager
 
 ---
 

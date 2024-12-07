@@ -16,9 +16,12 @@ The script will ask you for a playlist URL / ID. Currently only supports playlis
 
 Downloaded songs are saved in `./saves/{playlist id}/`. Song metadata and album art is already present.
 
-Songs are automatically added to iTunes/Apple Music, depending on which one you have. You can turn this behaviour off in [`config.json`](./config.md). Windows users will have songs saved to iTunes.
+Songs are automatically added to iTunes/Apple Music, depending on which one you have. You can turn this behaviour off in `config.json`. Windows users will have songs saved to iTunes.
 
-### HELLO: Linux users will not have iTunes functionality (no iTunes owo)
+### HELLO: Linux users will not have iTunes functionality (no iTunes owO)
+
+## Configuration
+`config.json` is the main configuration file. See [`config.md`](./config.md) for more info.
 
 ## Arguments
 - `-c, --clean_saves`: Cleans ./saves directory
@@ -29,4 +32,3 @@ Songs are automatically added to iTunes/Apple Music, depending on which one you 
 
 - Add to iTunes (Windows)
 - GUI
-- Cleaner code
