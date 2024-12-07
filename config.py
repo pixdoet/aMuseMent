@@ -15,4 +15,5 @@ def load_config():
 
 # has to be here, cannot put into JSON
 # when used must have leading slash!
-DEFAULT_SAVES_PATH = os.path.abspath("./saves/")
+fastFilePath = load_config()["export_folder"]
+DEFAULT_SAVES_PATH = os.path.abspath(fastFilePath)
