@@ -12,7 +12,12 @@ def playlist_cleaner(playlistUrl: str):
 
     # direct input playlist id
     if len(playlistUrl.split("list=")) <= 1:
-        if len(playlistUrl) == 34 or len(playlistUrl) == 41 or len(playlistUrl) == 43:
+        if (
+            len(playlistUrl) == 34
+            or len(playlistUrl) == 36
+            or len(playlistUrl) == 41
+            or len(playlistUrl) == 43
+        ):
             playlistId = playlistUrl
         else:
             print("No valid playlist url/ID!")
@@ -23,11 +28,11 @@ def playlist_cleaner(playlistUrl: str):
         playlistId = playlistUrlParse[1]
 
     # start checking playlist id
-    if playlistId.startswith("PL"):
-        if len(playlistId) == 34:
+    if playlistId.startswith("PL") or playlistId.startswith("VLPL"):
+        if len(playlistId) == 34 or len(playlistId) == 36:
             playlistType = "playlist"
         else:
-            print("Wrong playlist id? Normal playlists need to have 34 characters")
+            print("Wrong playlist id? Normal playlists need to have 34/36 characters")
             exit()
 
     elif playlistId.startswith("OLAK"):
