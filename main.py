@@ -28,7 +28,7 @@ configData = config.load_config()
 # main download function / default mode
 def main_download():
     # sanitize playlist url
-    playlist_url = input("Enter playlist url: ")
+    playlist_url = input("Enter playlist url/ID: ")
 
     playlistInfo = playlist.playlist_cleaner(playlistUrl=playlist_url)
 
@@ -77,10 +77,14 @@ def main_download():
             f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songId}.mp3",
             f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songTitle}.mp3",
         )
+        print(
+            f"Change song name to {config.DEFAULT_SAVES_PATH}/{playlistId}/{songTitle}.mp3"
+        )
+
+    osVersion = itunes.check_os_version()
 
     # add to itunes
     if configData["itunes_options"]["add_to_itunes"]:
-        osVersion = itunes.check_os_version()
 
         if osVersion == "darwin" or osVersion == "win32" or osVersion == "cygwin":
             if osVersion == "darwin":
@@ -94,7 +98,11 @@ def main_download():
             print("Device does not support iTunes/Apple Music! Exiting now...")
             exit()
 
-    # get absolute file path
+    # open folder in Finder/explorer
+    if configData["download_options"]["open_in_finder_after_download"]:
+        download.open_dir(
+            osVersion=osVersion, savesPath=f"{config.DEFAULT_SAVES_PATH}/{playlistId}"
+        )
     print(f"Finished! Files can be found at {config.DEFAULT_SAVES_PATH}/{playlistId}")
 
 

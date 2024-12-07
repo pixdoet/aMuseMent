@@ -3,6 +3,7 @@
         "placeholder_when_no_album": true,
         "no_album_placeholder_text": "unknown - no such metadata!",
         "use_playlist_id_for_folder_name": true,
+        "open_in_finder_after_download": true,
         "download_postprocessor_options": {
             "key": "FFmpegExtractAudio",
             "preferredcodec": "mp3",

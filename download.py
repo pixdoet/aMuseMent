@@ -4,6 +4,8 @@
 
 import config
 
+import os
+import subprocess
 import yt_dlp
 
 
@@ -30,3 +32,12 @@ def download_song(id: str, playlistId: str):
     ) as video:
         video.download(id)
         return True
+
+
+def open_dir(osVersion: str, savesPath: str):
+    if osVersion == "win32":
+        os.startfile(savesPath)
+    elif osVersion == "darwin":
+        subprocess.Popen(["open", savesPath])
+    else:
+        subprocess.Popen(["xdg-open", savesPath])
