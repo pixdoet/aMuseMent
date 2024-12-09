@@ -32,3 +32,9 @@ def wipe_all():
 
     else:
         print("Invalid input! [yes/no]")
+
+
+def wipe_all_fast():
+    print("Operating in OVERRIDE MODE, no user affirmation will be asked!")
+    shutil.rmtree(config.DEFAULT_SAVES_PATH)
+    print(f"All files from {config.DEFAULT_SAVES_PATH} removed!")
