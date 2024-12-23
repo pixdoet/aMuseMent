@@ -22,7 +22,7 @@ class aMuseGUI(tk.Frame):
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self.parent = parent
 
-        # root.title("aMuseMent Downloader")
+        root.title("aMuseMent Downloader")
 
         self.titleLabel = tk.Label(text="aMusement - the YouTube Music Downloader")
         self.titleLabel.pack()
@@ -34,17 +34,17 @@ class aMuseGUI(tk.Frame):
         self.playlistEntry.pack()
 
         self.downloadButton = tk.Button(text="Download", command=self.download_playlist)
-        self.downloadButton.pack(side="left")
+        self.downloadButton.pack()  # side="left")
 
         self.cleanButton = tk.Button(text="Clean saves dir", command=self.clean_saves)
-        self.cleanButton.pack(side="right")
-
-        self.statusIndicatorLabel = tk.Label(text="Current status:")
-        self.statusIndicatorLabel.pack(side="bottom")
+        self.cleanButton.pack()  # side="right")
 
         self.statusMsg = ""
         self.statusLabel = tk.Label(text=self.statusMsg)
         self.statusLabel.pack(side="bottom")
+
+        self.statusIndicatorLabel = tk.Label(text="Current status:")
+        self.statusIndicatorLabel.pack(side="bottom")
 
     def update_label(self, labelText: str, wait: bool = True):
         print(labelText)
@@ -55,9 +55,6 @@ class aMuseGUI(tk.Frame):
         # only unused with countdowns
         if wait:
             sleep(2)
-            # revert to idle mode
-            self.statusLabel.configure(text="Idle")
-            root.update()
 
     def download_playlist(self):
         # get playlist ID
@@ -115,6 +112,17 @@ class aMuseGUI(tk.Frame):
             )
 
         self.update_label(f"Finished downloading playlist!")
+
+        osVersion = itunes.check_os_version()
+        self.openFinderButton = tk.Button(
+            text="Open download location",
+            command=download.open_dir(
+                osVersion=osVersion,
+                savesPath=f"{config.DEFAULT_SAVES_PATH}/{self.playlistId}",
+            ),
+        )
+        self.openFinderButton.pack(side="bottom")
+        root.update()
 
     def clean_saves(self):
         self.update_label("ALL FILES from saves folder will be removed in 5 seconds")
