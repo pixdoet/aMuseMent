@@ -79,3 +79,15 @@ def add_to_itunes(playlistId: str, osVersion: str):
 
     print(f"Done! Open {musicService} and your songs should be there!")
     return 0
+
+
+def add_single_itunes(singlePath: str, osVersion: str):
+    useAm = use_am()
+    if useAm:
+        finalDir = amFolder
+        musicService = "Apple Music"
+    else:
+        finalDir = itunesFolder
+        musicService = "iTunes"
+
+    # get single from filename via singles folder

@@ -1,7 +1,9 @@
 """
-    yti_single.py - youtubei.py, but for single video ids
+    save_single.py - youtubei.py, but for single video ids
 
     Not used in playlist downloading due to redundancy and lag w/ multiple requests
+
+    Also: an all in one solution to downloading songs if you prefer, shld work alone w/ minimum requirements
 
     Uses /next (wtf)
 """
@@ -11,6 +13,7 @@ import os
 
 import config
 import download
+import itunes
 import tags
 
 configData = config.load_config()
@@ -90,9 +93,9 @@ def get_song_info(videoId: str):
 
     # check if ytm song
     if "album" in ytmCheck:
-        # not song, stop getting album details
         isYtmSong = True
     else:
+        # not song, stop getting album details
         isYtmSong = False
         if PLACEHOLDER_WHEN_NO_ALBUM:
             noAlbumText = NO_ALBUM_PLACEHOLDER_TEXT
@@ -161,6 +164,29 @@ def save_single_song(videoId: str):
         f"{config.DEFAULT_SAVES_PATH}/singles/{songTitle}.mp3",
     )
     print(f"Finished downloading song: {songTitle}!")
+
+    # add to itunes
+    osVersion = itunes.check_os_version()
+    finalSinglePath = f"{config.DEFAULT_SAVES_PATH}/singles/{songTitle}.mp3"
+
+    if configData["itunes_options"]["add_to_itunes"]:
+        if osVersion == "darwin" or osVersion == "win32" or osVersion == "cygwin":
+            if osVersion == "darwin":
+                itunes.add_single_itunes(
+                    singlePath=f"{finalSinglePath}",
+                    osVersion="darwin",
+                )
+            else:
+                print(f"Add to iTunes coming soon! Songs saved at {finalSinglePath}")
+                exit()
+        else:
+            print("Device does not support iTunes/Apple Music! Exiting now...")
+            exit()
+
+    if configData["download_options"]["open_in_finder_after_download"]:
+        download.open_dir(osVersion=osVersion, savesPath=finalSinglePath)
+
+    print(f"Download finished! Song can be found in {finalSinglePath}")
 
 
 # save_single_song(input("D: "))
