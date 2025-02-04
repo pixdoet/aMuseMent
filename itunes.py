@@ -84,10 +84,15 @@ def add_to_itunes(playlistId: str, osVersion: str):
 def add_single_itunes(singlePath: str, osVersion: str):
     useAm = use_am()
     if useAm:
+        # get single from filename via singles folder
         finalDir = amFolder
         musicService = "Apple Music"
     else:
         finalDir = itunesFolder
         musicService = "iTunes"
 
-    # get single from filename via singles folder
+    print(f"Operating in single mode - will copy {singlePath} to {finalDir} ")
+
+    shutil.copy(singlePath, finalDir)
+
+    print(f"Done! Open {musicService} and your songs should be there")
