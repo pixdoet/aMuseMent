@@ -184,7 +184,9 @@ def save_single_song(videoId: str):
             exit()
 
     if configData["download_options"]["open_in_finder_after_download"]:
-        download.open_dir(osVersion=osVersion, savesPath=finalSinglePath)
+        download.open_dir(
+            osVersion=osVersion, savesPath=f"{config.DEFAULT_SAVES_PATH}/singles/"
+        )
 
     print(f"Download finished! Song can be found in {finalSinglePath}")
 
