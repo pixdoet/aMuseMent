@@ -7,19 +7,27 @@
 import flet as ft
 from time import sleep
 import os
+import shutil
 
-import arguments
+
 import config
 import cleaner
 import download
 import itunes
 import playlist
-import save_single
 import tags
 import youtubei
 
+
+# attempt to copy local config.json to user folder if not exist
+if not os.path.isfile(config.DEFAULT_CONFIG_FOLDER):
+    shutil.copyfile(
+        config.resource_path("./config.json"),
+        config.DEFAULT_CONFIG_FOLDER,
+    )
+
 # globals
-configData = config.load_config()
+configData = config.load_config(configPath=config.DEFAULT_CONFIG_FOLDER)
 
 
 class Configures:
@@ -105,7 +113,11 @@ def main(page: ft.Page):
             update_status(f"Downloaded song: {songTitle}")
 
             tags.add_metadata(
-                filePath=f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songId}.mp3",
+                filePath=config.resource_path(
+                    config.resource_path(
+                        f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songId}.mp3"
+                    )
+                ),
                 songTitle=songTitle,
                 songArtist=songArtist,
                 songAlbum=songAlbum,
@@ -115,8 +127,12 @@ def main(page: ft.Page):
             update_status(f"Added metadata to song {songTitle}")
 
             os.rename(
-                f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songId}.mp3",
-                f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songTitle}.mp3",
+                config.resource_path(
+                    f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songId}.mp3"
+                ),
+                config.resource_path(
+                    f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songTitle}.mp3"
+                ),
             )
 
             update_status(f"Finished downloading song {songTitle}")
@@ -132,7 +148,9 @@ def main(page: ft.Page):
         if cfg.openInFinder:
             download.open_dir(
                 osVersion=cfg.osVersion,
-                savesPath=f"{config.DEFAULT_SAVES_PATH}/{playlistId}",
+                savesPath=config.resource_path(
+                    f"{config.DEFAULT_SAVES_PATH}/{playlistId}"
+                ),
             )
 
         update_status(f"Idle")
@@ -167,7 +185,9 @@ def main(page: ft.Page):
         page.update()
 
     def open_config_json(e):
-        download.open_dir(osVersion=cfg.osVersion, savesPath=f"./config.json")
+        download.open_dir(
+            osVersion=cfg.osVersion, savesPath=config.DEFAULT_CONFIG_FOLDER
+        )
 
     def toggle_fast_mode(e):
         cfg.fastMode = not cfg.fastMode
