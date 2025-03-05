@@ -3,7 +3,7 @@ playlist.py - seperated function for checking playlist types
 """
 
 
-def playlist_cleaner(playlistUrl: str):
+def playlist_cleaner(playlistUrl: str, uiMode: bool):
     """
     playlist_cleaner: playlist url safety check!
 
@@ -21,7 +21,10 @@ def playlist_cleaner(playlistUrl: str):
             playlistId = playlistUrl
         else:
             print("No valid playlist url/ID!")
-            exit()
+            if not uiMode:
+                exit()
+            else:
+                return False
     # parse id from url
     else:
         playlistUrlParse = playlistUrl.split("list=")
@@ -33,26 +36,38 @@ def playlist_cleaner(playlistUrl: str):
             playlistType = "playlist"
         else:
             print("Wrong playlist id? Normal playlists need to have 34/36 characters")
-            exit()
+            if not uiMode:
+                exit()
+            else:
+                return False
 
     elif playlistId.startswith("OLAK"):
         if len(playlistId) == 41:
             playlistType = "album"
         else:
             print("Wrong album id? Normal albums need to have 41 characters")
-            exit()
+            if not uiMode:
+                exit()
+            else:
+                return False
 
     elif playlistId.startswith("RD"):
         if len(playlistId) == 43:
             playlistType = "radio playlist"
         else:
             print("Wrong radio id? Normal radios need to have 43 characters")
-            exit()
+            if not uiMode:
+                exit()
+            else:
+                return False
     else:
         print(
             "Wrong playlist ID or playlist currently not supported! Supports PL, OLAK and RD playlists only."
         )
-        exit()
+        if not uiMode:
+            exit()
+        else:
+            return False
 
     playlistInfo = {"id": playlistId, "type": playlistType}
     return playlistInfo

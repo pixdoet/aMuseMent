@@ -31,7 +31,7 @@ def main_download():
     # sanitize playlist url
     playlist_url = input("Enter playlist url/ID: ")
 
-    playlistInfo = playlist.playlist_cleaner(playlistUrl=playlist_url)
+    playlistInfo = playlist.playlist_cleaner(playlistUrl=playlist_url, uiMode=False)
 
     playlistId = playlistInfo["id"]
     playlistType = playlistInfo["type"]
