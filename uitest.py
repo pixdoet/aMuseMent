@@ -1,4 +1,8 @@
-import tkinter as tk
+"""
+    uitest_flet: this time using flutter based!!!!!! excitement ensues
+"""
+
+import flet as ft
 from time import sleep
 import os
 
@@ -12,129 +16,131 @@ import save_single
 import tags
 import youtubei
 
-# import yt_dlp
+configData = config.load_config()
+openInFinder = configData["itunes_options"]["add_to_itunes"]
 
-# init tk window
+
+# debug printing
+def dprint(message):
+    print(f"[UI_DBG_PRINT]: {message}")
 
 
-class aMuseGUI(tk.Frame):
-    def __init__(self, parent, *args, **kwargs):
-        tk.Frame.__init__(self, parent, *args, **kwargs)
-        self.parent = parent
+# main app loop
+def main(page: ft.Page):
+    global configData, openInFinder, dprint
 
-        root.title("aMuseMent Downloader")
+    def update_status(statusMessage):
+        dprint(statusMessage)
+        ui_statusMsg.value = statusMessage
+        page.update()
+        sleep(1)
 
-        self.titleLabel = tk.Label(text="aMusement - the YouTube Music Downloader")
-        self.titleLabel.pack()
+    def download_playlist(e):
+        if not ui_playlistId.value:
+            ui_playlistId.error_text = "Enter playlist id"
+            page.update()
+        else:
+            playlistInput = ui_playlistId.value
+            update_status(f"Checking validity of {playlistInput}")
 
-        self.playlistLabel = tk.Label(text="Enter playlist ID or URL:")
-        self.playlistLabel.pack()
+            # playlist checker
+            playlistData = playlist.playlist_cleaner(playlistInput, uiMode=True)
+            if not playlistData:
+                update_status("Unsupported playlist id!")
+            else:
+                download_phase_2(playlistData)
 
-        self.playlistEntry = tk.Entry()
-        self.playlistEntry.pack()
+    def download_phase_2(playlistData):
+        playlistId = playlistData["id"]
+        playlistType = playlistData["type"]
+        update_status(f"Will download {playlistType} with id {playlistId}")
 
-        self.downloadButton = tk.Button(text="Download", command=self.download_playlist)
-        self.downloadButton.pack()  # side="left")
+        # get browse resp n all songs
+        browseResp = youtubei.request_browse(browseId=playlistId)
+        parsedResp = youtubei.parse_youtubei(ytResponse=browseResp)
 
-        self.cleanButton = tk.Button(text="Clean saves dir", command=self.clean_saves)
-        self.cleanButton.pack()  # side="right")
-
-        self.statusMsg = ""
-        self.statusLabel = tk.Label(text=self.statusMsg)
-        self.statusLabel.pack(side="bottom")
-
-        self.statusIndicatorLabel = tk.Label(text="Current status:")
-        self.statusIndicatorLabel.pack(side="bottom")
-
-    def update_label(self, labelText: str, wait: bool = True):
-        print(labelText)
-        self.statusLabel.configure(text=labelText)
-        # must put to update label in loop
-        root.update()
-
-        # only unused with countdowns
-        if wait:
-            sleep(2)
-
-    def download_playlist(self):
-        # get playlist ID
-        self.playlistInput = self.playlistEntry.get()
-
-        # run through playlist checker
-        self.playlistData = playlist.playlist_cleaner(self.playlistInput)
-        self.playlistId = self.playlistData["id"]
-        self.playlistType = self.playlistData["type"]
-        print(self.playlistId)
-
-        self.update_label(
-            labelText=f"Will download {self.playlistType}: {self.playlistId}",
-        )
-
-        # start download
-        self.browseResponse = youtubei.request_browse(browseId=self.playlistId)
-
-        # get all songs
-        self.parsedResponse = youtubei.parse_youtubei(ytResponse=self.browseResponse)
-
-        for currentSong in self.parsedResponse:
-            self.songId = currentSong["id"]
-
+        # extract data
+        for currentSong in parsedResp:
             # song metadata
-            self.songTitle = currentSong["title"]
-            self.songArtist = currentSong["artist"]
-            self.songAlbum = currentSong["album"]
-            self.songThumbnailUrl = currentSong["thumbnail"]
+            songId = currentSong["id"]
+            songTitle = currentSong["title"]
+            songArtist = currentSong["artist"]
+            songAlbum = currentSong["album"]
+            songThumbnailUrl = currentSong["thumbnail"]
 
-            self.update_label(
-                f"Video ID: {self.songId} | Title: {self.songTitle} | Author: {self.songArtist} | Album: {self.songAlbum}"
+            update_status(
+                f"Now downloading: Video ID: {songId} | Title: {songTitle} | Author: {songArtist} | Album: {songAlbum}"
             )
 
-            # download
-            download.download_song(id=self.songId, playlistId=self.playlistId)
-            self.update_label(f"Downloaded song {self.songTitle}")
+            download.download_song(id=songId, playlistId=playlistId)
+            update_status(f"Downloaded song: {songTitle}")
 
-            # add song meta
             tags.add_metadata(
-                filePath=f"{config.DEFAULT_SAVES_PATH}/{self.playlistId}/{self.songId}.mp3",
-                songTitle=self.songTitle,
-                songArtist=self.songArtist,
-                songAlbum=self.songAlbum,
-                songThumbnailUrl=self.songThumbnailUrl,
+                filePath=f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songId}.mp3",
+                songTitle=songTitle,
+                songArtist=songArtist,
+                songAlbum=songAlbum,
+                songThumbnailUrl=songThumbnailUrl,
             )
 
-            # change filename to song title
+            update_status(f"Added metadata to song {songTitle}")
+
             os.rename(
-                f"{config.DEFAULT_SAVES_PATH}/{self.playlistId}/{self.songId}.mp3",
-                f"{config.DEFAULT_SAVES_PATH}/{self.playlistId}/{self.songTitle}.mp3",
-            )
-            self.update_label(
-                f"Change song name to {config.DEFAULT_SAVES_PATH}/{self.playlistId}/{self.songTitle}.mp3"
+                f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songId}.mp3",
+                f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songTitle}.mp3",
             )
 
-        self.update_label(f"Finished downloading playlist!")
+            update_status(f"Finished downloading song {songTitle}")
+        update_status(f"Finished downloading playlist!")
 
+    # os init
+    def open_saves(e):
         osVersion = itunes.check_os_version()
-        self.openFinderButton = tk.Button(
-            text="Open download location",
-            command=download.open_dir(
-                osVersion=osVersion,
-                savesPath=f"{config.DEFAULT_SAVES_PATH}/{self.playlistId}",
-            ),
-        )
-        self.openFinderButton.pack(side="bottom")
-        root.update()
+        download.open_dir(osVersion=osVersion, savesPath=f"{config.DEFAULT_SAVES_PATH}")
 
-    def clean_saves(self):
-        self.update_label("ALL FILES from saves folder will be removed in 5 seconds")
-        i = 0
-        for i in range(5, 0, -1):
-            self.update_label(f"Deleting in {i}...", wait=False)
-            sleep(1)
-        cleaner.wipe_all_fast()
-        self.update_label("Done cleaning!")
+    # change saves state
+    def toggle_open_in_finder(e):
+        global configData, openInFinder
+        openInFinder = not openInFinder
+        dprint(f"openInFinder now: {openInFinder}")
+        ui_openInFinderItem.checked = openInFinder
+        page.update()
+
+    ui_openInFinderItem = ft.PopupMenuItem(
+        text="Open after download?",
+        checked=openInFinder,
+        on_click=toggle_open_in_finder,
+    )
+
+    # init page
+    page.title = "aMuseMent - the YouTube Music downloader"
+    page.appbar = ft.AppBar(
+        title=ft.Text("aMuseMent - the YouTube Music Downloader"),
+        actions=[
+            ft.PopupMenuButton(items=[ui_openInFinderItem]),
+        ],
+    )
+
+    # draw layout
+    ui_playlistId = ft.TextField(label="Enter playlist id")
+    ui_statusMsg = ft.Text("Idle")
+    page.add(
+        ft.Row(
+            [
+                ui_playlistId,
+            ]
+        ),
+        ft.Row(
+            [
+                ft.ElevatedButton("Download playlist!", on_click=download_playlist),
+                ft.ElevatedButton(
+                    "Open saves directory",
+                    on_click=open_saves,
+                ),
+            ]
+        ),
+        ft.Row([ui_statusMsg]),
+    )
 
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    gui = aMuseGUI(root)
-    gui.mainloop()
+ft.app(main)
