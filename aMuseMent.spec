@@ -6,7 +6,7 @@ added_files = [
 
 
 a = Analysis(
-    ['uitest.py'],
+    ['amuse_ui.py'],
     pathex=[],
     binaries=[],
     datas=added_files,
