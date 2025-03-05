@@ -1,0 +1,1 @@
+flet pack uitest.py --name uitest_ams --icon ./app/icon_png.png --add-data "config.json:." --product-name "aMuseMent - the YouTube Music downloader" --product-version "eternal beta" --copyright "(C) 2024-2025 Ian Hiew. Licensed under the Apache License, see LICENSE on Github page" --bundle-id "com.pixdoet.amusementDownloader"
