@@ -102,7 +102,7 @@ def parse_youtubei(ytResponse):
 
         # print data (redundant?)
         print(
-            f"vID: {currentVidId} | Title: {currentSongTitle} | Author: {currentSongAuthor} | Album: {currentSongAlbum}"
+            f"Video ID: {currentVidId} | Title: {currentSongTitle} | Author: {currentSongAuthor} | Album: {currentSongAlbum}"
         )
 
         songInfoDict = {

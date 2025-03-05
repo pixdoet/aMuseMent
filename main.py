@@ -127,6 +127,7 @@ def main():
     # -ab --about
     elif args.about:
         about.print_about()
+        exit()
 
 
 if __name__ == "__main__":

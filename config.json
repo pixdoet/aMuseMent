@@ -26,5 +26,9 @@
             "itunes_folder": "",
             "am_folder": ""
         }
+    },
+    "ui_options": {
+        "skip_status_update_wait_time": false,
+        "status_update_wait_seconds": 2
     }
 }

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """
     uitest_flet: this time using flutter based!!!!!! excitement ensues
 """
@@ -16,8 +18,22 @@ import save_single
 import tags
 import youtubei
 
+# globals
 configData = config.load_config()
-openInFinder = configData["itunes_options"]["add_to_itunes"]
+
+
+class Configures:
+    def __init__(self):
+        self.openInFinder = configData["download_options"][
+            "open_in_finder_after_download"
+        ]
+        self.addToItunes = configData["itunes_options"]["add_to_itunes"]
+        self.osVersion = itunes.check_os_version()
+        self.fastMode = configData["ui_options"]["skip_status_update_wait_time"]
+        self.updateWaitTime = configData["ui_options"]["status_update_wait_seconds"]
+
+
+cfg = Configures()
 
 
 # debug printing
@@ -27,13 +43,22 @@ def dprint(message):
 
 # main app loop
 def main(page: ft.Page):
-    global configData, openInFinder, dprint
+    global configData, cfg, dprint
 
-    def update_status(statusMessage):
+    # init page
+    page.title = "aMuseMent - the YouTube Music downloader"
+    # load font
+    page.fonts = {
+        "RobotoMono": "https://github.com/google/fonts/raw/refs/heads/main/apache/robotomono/RobotoMono%5Bwght%5D.ttf"
+    }
+
+    def update_status(statusMessage, wait: bool = True):
         dprint(statusMessage)
         ui_statusMsg.value = statusMessage
         page.update()
-        sleep(1)
+        if wait:
+            if not cfg.fastMode:
+                sleep(cfg.updateWaitTime)
 
     def download_playlist(e):
         if not ui_playlistId.value:
@@ -46,11 +71,15 @@ def main(page: ft.Page):
             # playlist checker
             playlistData = playlist.playlist_cleaner(playlistInput, uiMode=True)
             if not playlistData:
-                update_status("Unsupported playlist id!")
+                update_status(
+                    "Unsupported playlist id! Make sure you have pasted a valid playlist link"
+                )
+                ui_playlistId.error_text = "Unsupported playlist id!"
             else:
                 download_phase_2(playlistData)
 
     def download_phase_2(playlistData):
+        global configData, cfg, dprint
         playlistId = playlistData["id"]
         playlistType = playlistData["type"]
         update_status(f"Will download {playlistType} with id {playlistId}")
@@ -91,54 +120,112 @@ def main(page: ft.Page):
             )
 
             update_status(f"Finished downloading song {songTitle}")
+
         update_status(f"Finished downloading playlist!")
+
+        # add to itunes
+        if cfg.addToItunes:
+            update_status(f"Will add playlist to iTunes!")
+            itunes.add_to_itunes(playlistId=playlistId, osVersion=cfg.osVersion)
+            update_status(f"Finished adding to iTunes!")
+
+        if cfg.openInFinder:
+            download.open_dir(
+                osVersion=cfg.osVersion,
+                savesPath=f"{config.DEFAULT_SAVES_PATH}/{playlistId}",
+            )
+
+        update_status(f"Idle")
 
     # os init
     def open_saves(e):
-        osVersion = itunes.check_os_version()
-        download.open_dir(osVersion=osVersion, savesPath=f"{config.DEFAULT_SAVES_PATH}")
+        download.open_dir(
+            osVersion=cfg.osVersion, savesPath=f"{config.DEFAULT_SAVES_PATH}"
+        )
 
-    # change saves state
+    # clear saves
+    def clear_saves(e):
+        update_status("ALL FILES from saves folder will be removed in 5 seconds")
+        i = 0
+        for i in range(5, 0, -1):
+            update_status(f"Deleting in {i}...", wait=False)
+            sleep(1)
+        cleaner.wipe_all_fast()
+        update_status("Done cleaning!")
+
+    # appbar functions
     def toggle_open_in_finder(e):
-        global configData, openInFinder
-        openInFinder = not openInFinder
-        dprint(f"openInFinder now: {openInFinder}")
-        ui_openInFinderItem.checked = openInFinder
+        cfg.openInFinder = not cfg.openInFinder
+        dprint(f"openInFinder now: {cfg.openInFinder}")
+        ui_openInFinderItem.checked = cfg.openInFinder
+        page.update()
+
+    def toggle_add_to_itunes(e):
+        cfg.addToItunes = not cfg.addToItunes
+        dprint(f"addToItunes now: {cfg.addToItunes}")
+        ui_addToItunesItem.checked = cfg.addToItunes
+        page.update()
+
+    def open_config_json(e):
+        download.open_dir(osVersion=cfg.osVersion, savesPath=f"./config.json")
+
+    def toggle_fast_mode(e):
+        cfg.fastMode = not cfg.fastMode
+        dprint(f"fastMode now: {cfg.fastMode}")
+        ui_toggleFastMode.checked = cfg.fastMode
         page.update()
 
     ui_openInFinderItem = ft.PopupMenuItem(
         text="Open after download?",
-        checked=openInFinder,
+        checked=cfg.openInFinder,
         on_click=toggle_open_in_finder,
     )
-
-    # init page
-    page.title = "aMuseMent - the YouTube Music downloader"
+    ui_addToItunesItem = ft.PopupMenuItem(
+        text="Add to iTunes?", checked=cfg.addToItunes, on_click=toggle_add_to_itunes
+    )
+    ui_openConfigJsonItem = ft.PopupMenuItem(
+        text="Open config.json folder", on_click=open_config_json, icon="settings"
+    )
+    ui_toggleFastMode = ft.PopupMenuItem(
+        text="FAST MODE", checked=cfg.fastMode, on_click=toggle_fast_mode
+    )
     page.appbar = ft.AppBar(
-        title=ft.Text("aMuseMent - the YouTube Music Downloader"),
+        title=ft.Text(
+            "aMuseMent - the YouTube Music Downloader",
+            theme_style=ft.TextThemeStyle.HEADLINE_LARGE,
+        ),
         actions=[
-            ft.PopupMenuButton(items=[ui_openInFinderItem]),
+            ft.PopupMenuButton(
+                items=[
+                    ui_openInFinderItem,
+                    ui_addToItunesItem,
+                    ui_openConfigJsonItem,
+                    ui_toggleFastMode,
+                ]
+            ),
         ],
     )
 
     # draw layout
     ui_playlistId = ft.TextField(label="Enter playlist id")
-    ui_statusMsg = ft.Text("Idle")
+    ui_statusMsg = ft.Text("Idle", font_family="RobotoMono")
     page.add(
+        ui_playlistId,
         ft.Row(
             [
-                ui_playlistId,
-            ]
-        ),
-        ft.Row(
-            [
-                ft.ElevatedButton("Download playlist!", on_click=download_playlist),
                 ft.ElevatedButton(
-                    "Open saves directory",
-                    on_click=open_saves,
+                    "Download playlist!", on_click=download_playlist, icon="download"
+                ),
+                ft.ElevatedButton(
+                    "Open saves directory", on_click=open_saves, icon="folder"
                 ),
             ]
         ),
+        ft.ElevatedButton(
+            "CLEAR SAVES DIRECTORY", on_click=clear_saves, icon="delete_rounded"
+        ),
+        ft.Divider(),
+        ft.Text("Status: ", theme_style=ft.TextThemeStyle.HEADLINE_MEDIUM),
         ft.Row([ui_statusMsg]),
     )
 
