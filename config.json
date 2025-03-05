@@ -1,5 +1,5 @@
 {
-    "export_folder": "./saves",
+    "export_folder": "/amusement/saves",
     "download_options": {
         "placeholder_when_no_album": true,
         "no_album_placeholder_text": "unknown - no such metadata!",

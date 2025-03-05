@@ -19,7 +19,7 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
-def load_config():
+def load_config(configPath: str = "./config.json"):
     with open(resource_path("./config.json"), "r") as configFile:
         data = json.load(configFile)
 
@@ -29,5 +29,7 @@ def load_config():
 # has to be here, cannot put into JSON
 # when used must have leading slash!
 # + new: add to user's home folder by default (can be and should be turned off asap)
-fastFilePath = f"{Path.home()}/{load_config()['export_folder']}"
+homeFolder = Path.home()
+fastFilePath = f"{homeFolder}/{load_config()['export_folder']}"
 DEFAULT_SAVES_PATH = resource_path(os.path.abspath(fastFilePath))
+DEFAULT_CONFIG_FOLDER = f"{homeFolder}/amusement/config.json"

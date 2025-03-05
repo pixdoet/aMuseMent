@@ -20,7 +20,7 @@ def download_song(id: str, playlistId: str):
         {
             "extract_audio": True,
             "format": "bestaudio/best",
-            "outtmpl": f"{config.DEFAULT_SAVES_PATH}/{playlistId}/%(id)s",
+            "outtmpl": f"{config.resource_path(config.DEFAULT_SAVES_PATH)}/{playlistId}/%(id)s",
             "postprocessors": [
                 {
                     "key": "FFmpegExtractAudio",
