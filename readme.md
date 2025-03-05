@@ -10,7 +10,7 @@
 1. **IMPORTANT!** Get `ffmpeg` for your relevant operating system and add it to your PATH:
     - https://www.ffmpeg.org/download.html
 2. Download the binary from the Releases tab, right click and run!
-3. Some configurations are on the menu on the top right corner. To edit all configurations, edit the file found when pressing "Open config.json folder" 
+3. Some settings are on the menu on the top right corner. To change all settings, edit the file found when pressing "Open config.json folder". Syntax for `config.json` can be found at [config.md](./config.md)
 
 ## Usage (command line)
 1. Get `ffmpeg`, as above
