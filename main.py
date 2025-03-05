@@ -7,7 +7,8 @@
     (C) 2024 Ian Hiew - pixdo.et at gmail.com
 """
 
-# local imporT
+# local imporT\
+import about
 import arguments
 import config
 import cleaner
@@ -122,6 +123,10 @@ def main():
         songId = input("Enter song ID (no url): ")
         save_single.save_single_song(songId)
         exit()
+
+    # -ab --about
+    elif args.about:
+        about.print_about()
 
 
 if __name__ == "__main__":

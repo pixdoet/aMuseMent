@@ -11,3 +11,4 @@ parser.add_argument(
 parser.add_argument(
     "-s", "--save_single", action="store_true", help="[Advanced] Save a single song"
 )
+parser.add_argument("-ab", "--about", action="store_true", help="About this tool")
