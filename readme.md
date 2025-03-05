@@ -1,34 +1,37 @@
 # aMuseMent
 ### A tool to download YouTube Music files and move them to iTunes/Apple Music
 
-
-## Installation
-1. Get Python 3.10 or newer
-2. Clone / download repo to local system. Init venv (if needed)
-3. Download requirements.txt: `python3.10 -m pip install -r requirements.txt`
-4. Install `ffmpeg` (for song conversion, must install!!!): https://www.ffmpeg.org/download.html
-    - Important! Make sure `ffmpeg` is in your PATH (especially Windows): [Windows](https://phoenixnap.com/kb/ffmpeg-windows) | [Mac](https://superuser.com/questions/624561/install-ffmpeg-on-os-x) | [Linux](https://en.wikipedia.org/wiki/Trollface#/media/File:Trollface.png)
+## Features
+- 📁 Download directly from YouTube Music playlists at the highest quality possible!
+- 📝 Music metadata prepared for you!
+- 🎵 Add to iTunes automatically!
 
 ## Usage
-Run `python3.10 main.py`
+1. **IMPORTANT!** Get `ffmpeg` for your relevant operating system and add it to your PATH:
+    - https://www.ffmpeg.org/download.html
+2. Download the binary from the Releases tab, right click and run!
+3. Some configurations are on the menu on the top right corner. To edit all configurations, edit the file found when pressing "Open config.json folder" 
 
-The script will ask you for a playlist URL / ID. Currently only supports playlist IDs starting with PL(normal playlists), RD(radio) and OLAK(albums)
+## Usage (command line)
+1. Get `ffmpeg`, as above
+2. Get Python 3.10 or newer
+3. Clone / download repo to local system. Init venv (if needed)
+4. Download requirements.txt: python3.10 -m pip install -r requirements.txt
+5. Run `main.py` for the command line version or `amuse_ui.py` for the GUI version
 
-Downloaded songs are saved in `./saves/{playlist id}/`. Song metadata and album art is already present.
+## FAQ
+Q: *Why am I stuck on downloading the first song?*
 
-Songs are automatically added to iTunes/Apple Music, depending on which one you have. You can turn this behaviour off in `config.json`. Windows users will have songs saved to iTunes.
+A: `ffmpeg` is not installed! Get it and make sure it's in your PATH.
 
-### HELLO: Linux users will not have iTunes functionality (no iTunes owO)
+Q: *Why no Windows add-to-iTunes?*
 
-## Configuration
-`config.json` is the main configuration file. See [`config.md`](./config.md) for more info.
+A: Add to iTunes on Windows is coming soon! I just need some time to figure out the correct directory for Windows iTunes.
 
-## Arguments
-- `-c, --clean_saves`: Cleans ./saves directory
-- `-s, --save_single`: [Advanced] Save a single song
+Q: *Will this support Spotify?*
 
-## TODO
-(in order of importance)
+A: No. Spotify's API is too much of a hassle for me to deal with rn.
 
-- Add to iTunes (Windows)
-- GUI
+Q: *What is **FAST MODE**?*
+
+A: 😏
