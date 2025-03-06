@@ -20,6 +20,10 @@
 4. Download requirements.txt: python3.10 -m pip install -r requirements.txt
 5. Run `main.py` for the command line version or `amuse_ui.py` for the GUI version
 
+## IF THE APP FAILS TO RUN
+If you see the message "Apple could not verify ... is free of malware", open System Settings, search for Gatekeeper and click "Open Anyway" as shown below:
+![allow app 2 run](./app/gatekeeper.png)
+
 ## FAQ
 Q: *Why am I stuck on downloading the first song?*
 
