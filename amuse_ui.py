@@ -21,10 +21,15 @@ import youtubei
 
 # attempt to copy local config.json to user folder if not exist
 if not os.path.isfile(config.DEFAULT_CONFIG_FOLDER):
+    print("No config file found!")
+    # try to create folder
+    os.makedirs(os.path.dirname(config.DEFAULT_CONFIG_FOLDER), exist_ok=True)
+    # copy
     shutil.copyfile(
         config.resource_path("./config.json"),
         config.DEFAULT_CONFIG_FOLDER,
     )
+    print(f"Copied default config.json to {config.DEFAULT_CONFIG_FOLDER}")
 
 # globals
 configData = config.load_config(configPath=config.DEFAULT_CONFIG_FOLDER)
