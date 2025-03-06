@@ -8,7 +8,10 @@ import os
 import subprocess
 import yt_dlp
 
+import itunes  # for check_os_version
+
 configData = config.load_config()
+osVersion = itunes.check_os_version()
 
 
 def download_song(id: str, playlistId: str):
@@ -24,7 +27,7 @@ def download_song(id: str, playlistId: str):
             "format": "bestaudio/best",
             "outtmpl": f"{config.resource_path(config.DEFAULT_SAVES_PATH)}/{playlistId}/%(id)s",
             "ffmpeg_location": config.resource_path(
-                configData["download_options"]["ffmpeg_path"]["darwin"]
+                configData["download_options"]["ffmpeg_path"][osVersion]
             ),
             "postprocessors": [
                 {

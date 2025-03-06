@@ -26,10 +26,12 @@ def check_os_version():
     """
     if sys.platform == "darwin":
         return "darwin"
-    elif sys.platform == "win32" or sys.platform == "cygwin":
+    elif sys.platform == "win32" or sys.platform == "cygwin" or sys.platform == "msys":
         print("Add to iTunes/Music is coming to Windows soon! Thanks for supporting :)")
         print("Songs still downloaded to {config.DEFAULT_SAVES_PATH}/{playlist id}")
         return "win32"
+    elif sys.platform == "linux" or sys.platform == "linux2":
+        return "linux"
     else:
         return "other"
 

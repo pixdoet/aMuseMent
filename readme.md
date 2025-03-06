@@ -7,8 +7,9 @@
 - 🎵 Add to iTunes automatically!
 
 ## Usage
-1. **IMPORTANT!** Get `ffmpeg` for your relevant operating system and add it to your PATH:
-    - https://www.ffmpeg.org/download.html
+1. **IMPORTANT!** Get `ffmpeg` for your relevant operating system and add it to your PATH: https://www.ffmpeg.org/download.html
+    - Note: As of commit `b5424d3`, `ffmpeg` has been bundled for MacOS, and in a later commit for more operating systems as well. Regardless, it is recommended you install `ffmpeg` as a backup.
+
 2. Download the binary from the Releases tab, right click and run!
 3. Some settings are on the menu on the top right corner. To change all settings, edit the file found when pressing "Open config.json folder". Syntax for `config.json` can be found at [config.md](./config.md)
 
