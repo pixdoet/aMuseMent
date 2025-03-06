@@ -10,6 +10,10 @@
             "preferredcodec": "mp3",
             "preferredquality": "192"
         },
+        "ffmpeg_path": {
+            "darwin": "./amuseLib/ffmpeg_darwin",
+            "win32": "./amuseLib/ffmpeg_win32.exe"
+        },
         "youtubei_options": {
             "client_version": "1.20241023.01.00",
             "client_name": "WEB_REMIX"

@@ -8,6 +8,8 @@ import os
 import subprocess
 import yt_dlp
 
+configData = config.load_config()
+
 
 def download_song(id: str, playlistId: str):
     """
@@ -21,6 +23,9 @@ def download_song(id: str, playlistId: str):
             "extract_audio": True,
             "format": "bestaudio/best",
             "outtmpl": f"{config.resource_path(config.DEFAULT_SAVES_PATH)}/{playlistId}/%(id)s",
+            "ffmpeg_location": config.resource_path(
+                configData["download_options"]["ffmpeg_path"]["darwin"]
+            ),
             "postprocessors": [
                 {
                     "key": "FFmpegExtractAudio",

@@ -8,7 +8,7 @@ added_files = [
 a = Analysis(
     ['amuse_ui.py'],
     pathex=[],
-    binaries=[],
+    binaries=[("./amuseLib/ffmpeg_darwin", "./amuseLib")],
     datas=added_files,
     hiddenimports=["config", "yt_dlp"],
     hookspath=[],
