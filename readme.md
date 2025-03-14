@@ -40,3 +40,9 @@ A: No. Spotify's API is too much of a hassle for me to deal with rn.
 Q: *What is **FAST MODE**?*
 
 A: 😏
+
+## Building the app
+If you for some inexplicable reason want to build this into a binary...
+1. Get PyInstaller
+2. Change the `binaries` section in `aMuseMent.spec` to point to your specific build of `ffmpeg`
+3. Run `pyinstaller aMuseMent.spec`
