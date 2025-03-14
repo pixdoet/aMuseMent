@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-    uitest_flet: this time using flutter based!!!!!! excitement ensues
+uitest_flet: this time using flutter based!!!!!! excitement ensues
 """
 
 import flet as ft
@@ -131,14 +131,24 @@ def main(page: ft.Page):
 
             update_status(f"Added metadata to song {songTitle}")
 
+            # check for / in filename
+            songFileName = songTitle.replace(
+                "/", configData["download_options"]["replace_slash_with"]
+            )
+            # change filename to song title
             os.rename(
                 config.resource_path(
                     f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songId}.mp3"
                 ),
                 config.resource_path(
-                    f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songTitle}.mp3"
+                    f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songFileName}.mp3"
                 ),
             )
+            if songFileName != songTitle:
+                update_status(
+                    f"Slash character (/) replaced by {configData['download_options']['replace_slash_with']}"
+                )
+                update_status(f"New title is {songFileName}")
 
             update_status(f"Finished downloading song {songTitle}")
 
@@ -150,6 +160,7 @@ def main(page: ft.Page):
             itunes.add_to_itunes(playlistId=playlistId, osVersion=cfg.osVersion)
             update_status(f"Finished adding to iTunes!")
 
+        # open in findER
         if cfg.openInFinder:
             download.open_dir(
                 osVersion=cfg.osVersion,

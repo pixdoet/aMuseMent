@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 """
-    aMuseMent - YTM to iTunes/AM conversion tool
-    Fully fledged with metadata!
+aMuseMent - YTM to iTunes/AM conversion tool
+Fully fledged with metadata!
 
-    (C) 2024 Ian Hiew - pixdo.et at gmail.com
+(C) 2024 Ian Hiew - pixdo.et at gmail.com
 """
 
 # local imporT\
@@ -73,13 +73,20 @@ def main_download():
             songThumbnailUrl=songThumbnailUrl,
         )
 
+        # safety check for if filename contains slash (/), replace with special char
+        songFileName = songTitle.replace(
+            "/", configData["download_options"]["replace_slash_with"]
+        )
         # change filename to song title
         os.rename(
             f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songId}.mp3",
-            f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songTitle}.mp3",
+            f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songFileName}.mp3",
         )
+        if songFileName != songTitle:
+            print(f"Replaced character / with {configData['download_options']['replace_slash_with']}")
+            print(f"New filename is {songFileName}")
         print(
-            f"Change song name to {config.DEFAULT_SAVES_PATH}/{playlistId}/{songTitle}.mp3"
+            f"Change song name to {config.DEFAULT_SAVES_PATH}/{playlistId}/{songFileName}.mp3"
         )
 
     osVersion = itunes.check_os_version()
