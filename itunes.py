@@ -1,5 +1,5 @@
 """
-    itunes.py - Add downloaded files to "Automatically add to iTunes" folder or smth
+itunes.py - Add downloaded files to "Automatically add to iTunes" folder or smth
 """
 
 import os
@@ -28,7 +28,7 @@ def check_os_version():
         return "darwin"
     elif sys.platform == "win32" or sys.platform == "cygwin" or sys.platform == "msys":
         print("Add to iTunes/Music is coming to Windows soon! Thanks for supporting :)")
-        print("Songs still downloaded to {config.DEFAULT_SAVES_PATH}/{playlist id}")
+        print(f"Songs still downloaded to {config.DEFAULT_SAVES_PATH}/playlist id")
         return "win32"
     elif sys.platform == "linux" or sys.platform == "linux2":
         return "linux"
