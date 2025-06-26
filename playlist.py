@@ -46,10 +46,10 @@ def playlist_cleaner(playlistUrl: str, uiMode: bool):
     # direct input playlist id
     if len(playlistUrl.split("list=")) <= 1:
 
-        if "?v=" in playlistUrl:
+        if "v=" in playlistUrl:
             playlistInfo = {
                 "type": "single_video",
-                "id": playlistUrl.split("v=")[:11],
+                "id": playlistUrl.split("v=")[1][:11],
             }
             return playlistInfo
 
@@ -75,17 +75,16 @@ def playlist_cleaner(playlistUrl: str, uiMode: bool):
                     return False
 
     # check for ?v=
-    if "v=" in playlistUrl:
-        if "list=" in playlistUrl:
-            # double url!
-            downloadSelection = playlist_or_video(playlistUrl=playlistUrl)
+    if "v=" in playlistUrl and "list=" in playlistUrl:
+        # double url!
+        downloadSelection = playlist_or_video(playlistUrl=playlistUrl)
 
-            # found single video
-            if downloadSelection["mode"] == "single_video":
-                playlistInfo = {"type": "single_video", "id": downloadSelection["id"]}
-                return playlistInfo
-            elif downloadSelection["mode"] == "playlist":
-                playlistId = downloadSelection["id"]
+        # found single video
+        if downloadSelection["mode"] == "single_video":
+            playlistInfo = {"type": "single_video", "id": downloadSelection["id"]}
+            return playlistInfo
+        elif downloadSelection["mode"] == "playlist":
+            playlistId = downloadSelection["id"]
 
     # parse id from url
     else:
