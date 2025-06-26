@@ -15,6 +15,7 @@ import cleaner
 import download
 import itunes
 import playlist
+import save_single
 import tags
 import youtubei
 
@@ -91,83 +92,100 @@ def main(page: ft.Page):
             else:
                 download_phase_2(playlistData)
 
+    def download_save_single(videoId):
+        # save single song only
+        global configData, cfg, dprint
+        dprint("Save single mode")
+        update_status(f"Downloading in single-saving mode!")
+
+        singleSaveStatus = save_single.save_single_song(videoId=videoId, uiMode=True)
+
+        if singleSaveStatus["success"]:
+            update_status(singleSaveStatus["message"])
+
     def download_phase_2(playlistData):
         global configData, cfg, dprint
         playlistId = playlistData["id"]
         playlistType = playlistData["type"]
-        update_status(f"Will download {playlistType} with id {playlistId}")
 
-        # get browse resp n all songs
-        browseResp = youtubei.request_browse(browseId=playlistId)
-        parsedResp = youtubei.parse_youtubei(ytResponse=browseResp)
+        # check for single_video mode
+        if playlistType == "single_video":
+            download_save_single(videoId=playlistId)
 
-        # extract data
-        for currentSong in parsedResp:
-            # song metadata
-            songId = currentSong["id"]
-            songTitle = currentSong["title"]
-            songArtist = currentSong["artist"]
-            songAlbum = currentSong["album"]
-            songThumbnailUrl = currentSong["thumbnail"]
+        else:
+            update_status(f"Will download {playlistType} with id {playlistId}")
 
-            update_status(
-                f"Now downloading: Video ID: {songId} | Title: {songTitle} | Author: {songArtist} | Album: {songAlbum}"
-            )
+            # get browse resp n all songs
+            browseResp = youtubei.request_browse(browseId=playlistId)
+            parsedResp = youtubei.parse_youtubei(ytResponse=browseResp)
 
-            download.download_song(id=songId, playlistId=playlistId)
-            update_status(f"Downloaded song: {songTitle}")
+            # extract data
+            for currentSong in parsedResp:
+                # song metadata
+                songId = currentSong["id"]
+                songTitle = currentSong["title"]
+                songArtist = currentSong["artist"]
+                songAlbum = currentSong["album"]
+                songThumbnailUrl = currentSong["thumbnail"]
 
-            tags.add_metadata(
-                filePath=config.resource_path(
+                update_status(
+                    f"Now downloading: Video ID: {songId} | Title: {songTitle} | Author: {songArtist} | Album: {songAlbum}"
+                )
+
+                download.download_song(id=songId, playlistId=playlistId)
+                update_status(f"Downloaded song: {songTitle}")
+
+                tags.add_metadata(
+                    filePath=config.resource_path(
+                        config.resource_path(
+                            f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songId}.mp3"
+                        )
+                    ),
+                    songTitle=songTitle,
+                    songArtist=songArtist,
+                    songAlbum=songAlbum,
+                    songThumbnailUrl=songThumbnailUrl,
+                )
+
+                update_status(f"Added metadata to song {songTitle}")
+
+                # check for / in filename
+                songFileName = songTitle.replace(
+                    "/", configData["download_options"]["replace_slash_with"]
+                )
+                # change filename to song title
+                os.rename(
                     config.resource_path(
                         f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songId}.mp3"
-                    )
-                ),
-                songTitle=songTitle,
-                songArtist=songArtist,
-                songAlbum=songAlbum,
-                songThumbnailUrl=songThumbnailUrl,
-            )
-
-            update_status(f"Added metadata to song {songTitle}")
-
-            # check for / in filename
-            songFileName = songTitle.replace(
-                "/", configData["download_options"]["replace_slash_with"]
-            )
-            # change filename to song title
-            os.rename(
-                config.resource_path(
-                    f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songId}.mp3"
-                ),
-                config.resource_path(
-                    f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songFileName}.mp3"
-                ),
-            )
-            if songFileName != songTitle:
-                update_status(
-                    f"Slash character (/) replaced by {configData['download_options']['replace_slash_with']}"
+                    ),
+                    config.resource_path(
+                        f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songFileName}.mp3"
+                    ),
                 )
-                update_status(f"New title is {songFileName}")
+                if songFileName != songTitle:
+                    update_status(
+                        f"Slash character (/) replaced by {configData['download_options']['replace_slash_with']}"
+                    )
+                    update_status(f"New title is {songFileName}")
 
-            update_status(f"Finished downloading song {songTitle}")
+                update_status(f"Finished downloading song {songTitle}")
 
-        update_status(f"Finished downloading playlist!")
+            update_status(f"Finished downloading playlist!")
 
-        # add to itunes
-        if cfg.addToItunes:
-            update_status(f"Will add playlist to iTunes!")
-            itunes.add_to_itunes(playlistId=playlistId, osVersion=cfg.osVersion)
-            update_status(f"Finished adding to iTunes!")
+            # add to itunes
+            if cfg.addToItunes:
+                update_status(f"Will add playlist to iTunes!")
+                itunes.add_to_itunes(playlistId=playlistId, osVersion=cfg.osVersion)
+                update_status(f"Finished adding to iTunes!")
 
-        # open in findER
-        if cfg.openInFinder:
-            download.open_dir(
-                osVersion=cfg.osVersion,
-                savesPath=config.resource_path(
-                    f"{config.DEFAULT_SAVES_PATH}/{playlistId}"
-                ),
-            )
+            # open in findER
+            if cfg.openInFinder:
+                download.open_dir(
+                    osVersion=cfg.osVersion,
+                    savesPath=config.resource_path(
+                        f"{config.DEFAULT_SAVES_PATH}/{playlistId}"
+                    ),
+                )
 
         update_status(f"Idle")
 

@@ -1,15 +1,16 @@
 """
-    save_single.py - youtubei.py, but for single video ids
+save_single.py - youtubei.py, but for single video ids
 
-    Not used in playlist downloading due to redundancy and lag w/ multiple requests
+Not used in playlist downloading due to redundancy and lag w/ multiple requests
 
-    Also: an all in one solution to downloading songs if you prefer, shld work alone w/ minimum requirements
+Also: an all in one solution to downloading songs if you prefer, shld work alone w/ minimum requirements
 
-    Uses /next (wtf)
+Uses /next (wtf)
 """
 
 import requests
 import os
+import time
 
 import config
 import download
@@ -132,7 +133,7 @@ def get_song_info(videoId: str):
     return finalSongInfo
 
 
-def save_single_song(videoId: str):
+def save_single_song(videoId: str, uiMode: bool):
     currentSong = get_song_info(videoId=videoId)
     songTitle = currentSong["title"]
     songArtist = currentSong["artist"]
@@ -141,6 +142,8 @@ def save_single_song(videoId: str):
     songReleaseTime = currentSong["releaseTime"]
     isYtm = currentSong["isYtmSong"]
 
+    print("You are now in SINGLE-SAVING MODE.")
+    time.sleep(3)
     print(
         f"Video ID: {videoId} | Is YouTube Music song: {isYtm} | Title: {songTitle} | Author: {songArtist} | Album: {songAlbum} | Year: {songReleaseTime} | Thumbnail: {songThumbnailUrl}"
     )
@@ -178,10 +181,23 @@ def save_single_song(videoId: str):
                 )
             else:
                 print(f"Add to iTunes coming soon! Songs saved at {finalSinglePath}")
-                exit()
+                if uiMode:
+                    return {
+                        "success": True,
+                        "message": f"Successfully downloaded song {songTitle}! Add to iTunes is coming to your playform soon",
+                    }
+                else:
+                    exit()
+
         else:
-            print("Device does not support iTunes/Apple Music! Exiting now...")
-            exit()
+            print("Device does not support iTunes/Apple Music!")
+            if uiMode:
+                return {
+                    "success": True,
+                    "message": f"Successfully downloaded song {songTitle}! Add to iTunes is not available on your platform :(",
+                }
+            else:
+                exit()
 
     if configData["download_options"]["open_in_finder_after_download"]:
         download.open_dir(
@@ -189,6 +205,12 @@ def save_single_song(videoId: str):
         )
 
     print(f"Download finished! Song can be found in {finalSinglePath}")
+
+    if uiMode:
+        return {
+            "success": True,
+            "message": f"Successfully downloaded song {songTitle}!",
+        }
 
 
 # save_single_song(input("D: "))

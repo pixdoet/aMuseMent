@@ -36,6 +36,11 @@ def main_download():
     playlistId = playlistInfo["id"]
     playlistType = playlistInfo["type"]
 
+    # check if single song mode
+    if playlistType == "single_video":
+        save_single.save_single_song(videoId=playlistId, uiMode=False)
+        exit()
+
     print(f"Downloading {playlistType} with id {playlistId}")
 
     # fetch songs
@@ -83,7 +88,9 @@ def main_download():
             f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songFileName}.mp3",
         )
         if songFileName != songTitle:
-            print(f"Replaced character / with {configData['download_options']['replace_slash_with']}")
+            print(
+                f"Replaced character / with {configData['download_options']['replace_slash_with']}"
+            )
             print(f"New filename is {songFileName}")
         print(
             f"Change song name to {config.DEFAULT_SAVES_PATH}/{playlistId}/{songFileName}.mp3"
@@ -128,7 +135,7 @@ def main():
     elif args.save_single:
         print("Downloading in Single mode")
         songId = input("Enter song ID (no url): ")
-        save_single.save_single_song(songId)
+        save_single.save_single_song(videoId=songId, uiMode=False)
         exit()
 
     # -ab --about
