@@ -1,5 +1,5 @@
 """
-    about.py - i love copyright
+about.py - i love copyright
 """
 
 about_message = """aMuseMent - the YouTube Music downloader
