@@ -45,7 +45,7 @@ def playlist_cleaner(playlistUrl: str, uiMode: bool):
 
     # direct input playlist id
     if len(playlistUrl.split("list=")) <= 1:
-
+        # single video
         if "v=" in playlistUrl:
             playlistInfo = {
                 "type": "single_video",
@@ -75,7 +75,7 @@ def playlist_cleaner(playlistUrl: str, uiMode: bool):
                     return False
 
     # check for ?v=
-    if "v=" in playlistUrl and "list=" in playlistUrl:
+    elif "v=" in playlistUrl and "list=" in playlistUrl:
         # double url!
         downloadSelection = playlist_or_video(playlistUrl=playlistUrl)
 
@@ -95,7 +95,7 @@ def playlist_cleaner(playlistUrl: str, uiMode: bool):
     if playlistId.startswith("PL") or playlistId.startswith("VLPL"):
         if len(playlistId) == 34:
             playlistType = "playlist"
-        if len(playlistId) == 36:
+        elif len(playlistId) == 36:
             playlistId = playlistId[2:]
             playlistType = "playlist"
         else:

@@ -66,6 +66,7 @@ def main(page: ft.Page):
         "RobotoMono": "https://github.com/google/fonts/raw/refs/heads/main/apache/robotomono/RobotoMono%5Bwght%5D.ttf"
     }
 
+    # status update function
     def update_status(statusMessage, wait: bool = True):
         dprint(statusMessage)
         ui_statusMsg.value = statusMessage
@@ -92,6 +93,7 @@ def main(page: ft.Page):
             else:
                 download_phase_2(playlistData)
 
+    # isolated save_single function
     def download_save_single(videoId):
         # save single song only
         global configData, cfg, dprint
