@@ -152,9 +152,15 @@ def main(page: ft.Page):
                 update_status(f"Added metadata to song {songTitle}")
 
                 # check for / in filename
-                songFileName = songTitle.replace(
-                    "/", configData["download_options"]["replace_slash_with"]
-                )
+                if songTitle.find("/"):
+                    songFileName = songTitle.replace(
+                        "/", configData["download_options"]["replace_slash_with"]
+                    )
+                
+                if songTitle.find("|"): # shld be windows only
+                    songFileName = songTitle.replace(
+                        "|", configData["download_options"]["replace_slash_with"]
+                    )
                 # change filename to song title
                 os.rename(
                     config.resource_path(

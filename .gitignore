@@ -3,6 +3,9 @@ PL*/
 test*
 saves*
 req.json
+Include/*
+Lib/*
+Scripts/*
 
 # General
 .DS_Store
@@ -25,7 +28,7 @@ Icon
 .com.apple.timemachine.donotpresent
 
 # Directories potentially created on remote AFP share
-.AppleDB
+.AppleDin
 .AppleDesktop
 Network Trash Folder
 Temporary Items

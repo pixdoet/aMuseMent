@@ -13,7 +13,7 @@
         },
         "ffmpeg_path": {
             "darwin": "./amuseLib/ffmpeg_darwin",
-            "win32": "./amuseLib/ffmpeg_win32/bin/ffmpeg.exe",
+            "win32": "./amuseLib/ffmpeg_win32/ffmpeg.exe",
             "linux": "./amuseLib/ffmpeg_linux/ffmpeg"
         },
         "youtubei_options": {
@@ -22,15 +22,16 @@
         }
     },
     "itunes_options": {
-        "add_to_itunes": false,
+        "add_to_itunes": true,
         "darwin": {
             "itunes_folder": "/iTunes/iTunes Media/Automatically Add to iTunes",
             "am_folder": "/Music/Music/Media.localized/Automatically Add to Music.localized",
             "am_folder_alt": "/Music/Music/Media/Automatically Add to Music"
         },
         "win32": {
-            "itunes_folder": "",
-            "am_folder": ""
+            "itunes_folder": "/Music/iTunes/iTunes Media/Automatically Add to iTunes",
+            "am_folder": "/Music/iTunes/iTunes Media/Automatically Add to Music",
+            "am_folder_alt": "/Music/iTunes/iTunes Media/Automatically Add to Music"
         }
     },
     "ui_options": {

@@ -78,10 +78,16 @@ def main_download():
             songThumbnailUrl=songThumbnailUrl,
         )
 
-        # safety check for if filename contains slash (/), replace with special char
-        songFileName = songTitle.replace(
-            "/", configData["download_options"]["replace_slash_with"]
-        )
+        # safety check for if filename contains special chars (/, |), replace with usable char
+        if songTitle.find("/"):
+            songFileName = songTitle.replace(
+                "/", configData["download_options"]["replace_slash_with"]
+            )
+        
+        if songTitle.find("|"): # shld be windows only
+            songFileName = songTitle.replace(
+                "|", configData["download_options"]["replace_slash_with"]
+            )
         # change filename to song title
         os.rename(
             f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songId}.mp3",
@@ -104,9 +110,9 @@ def main_download():
         if osVersion == "darwin" or osVersion == "win32" or osVersion == "cygwin":
             if osVersion == "darwin":
                 itunes.add_to_itunes(playlistId=playlistId, osVersion="darwin")
-            else:
+            elif osVersion == "win32" or osVersion == "cygwin":
                 # windows moment
-                None
+                itunes.add_to_itunes(playlistId=playlistId, osVersion="win32")
 
         else:
             # y r u running dis on ur ms dos machine

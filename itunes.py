@@ -12,12 +12,6 @@ import config
 configData = config.load_config()
 configData = configData["itunes_options"]
 
-# grab home directory
-homeDir = pathlib.Path.home()
-# get am directory
-amFolder = f"{homeDir}{configData['darwin']['am_folder']}"
-amAlt = f"{homeDir}{configData['darwin']['am_folder_alt']}"
-itunesFolder = f"{homeDir}{configData['darwin']['itunes_folder']}"
 
 
 def check_os_version():
@@ -27,14 +21,26 @@ def check_os_version():
     if sys.platform == "darwin":
         return "darwin"
     elif sys.platform == "win32" or sys.platform == "cygwin" or sys.platform == "msys":
-        print("Add to iTunes/Music is coming to Windows soon! Thanks for supporting :)")
-        print(f"Songs still downloaded to {config.DEFAULT_SAVES_PATH}/playlist id")
+        print("Add to iTunes/Music is in beta for Windows! Some features might not work properly :)")
         return "win32"
     elif sys.platform == "linux" or sys.platform == "linux2":
         return "linux"
     else:
         return "other"
 
+osVersion = check_os_version()
+
+if osVersion == "darwin" or osVersion == "win32":
+    # grab home directory
+    homeDir = pathlib.Path.home()
+    print(homeDir)
+    # get am directory
+    amFolder = f"{homeDir}{configData[osVersion]['am_folder']}"
+    amAlt = f"{homeDir}{configData[osVersion]['am_folder_alt']}"
+    itunesFolder = f"{homeDir}{configData[osVersion]['itunes_folder']}"
+
+def dbg_dir_data():
+    return{'am1': amFolder, 'am2':amAlt, 'it': itunesFolder}
 
 def use_am():
     """
@@ -77,7 +83,7 @@ def add_to_itunes(playlistId: str, osVersion: str):
     if osVersion == "darwin":
         shutil.copytree(localSaveDir, finalDir, dirs_exist_ok=True)
     elif osVersion == "win32" or osVersion == "cygwin":
-        None
+        shutil.copytree(localSaveDir, finalDir, dirs_exist_ok=True)
 
     print(f"Done! Open {musicService} and your songs should be there!")
     return 0
