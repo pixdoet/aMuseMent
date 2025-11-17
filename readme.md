@@ -6,11 +6,9 @@
 - 📝 Music metadata prepared for you!
 - 🎵 Add to iTunes automatically!
 
-## Usage
+## Usage (GUI)
 1. **IMPORTANT!** Get `ffmpeg` for your relevant operating system and add it to your PATH: https://www.ffmpeg.org/download.html
     - Note: As of commit `b5424d3`, `ffmpeg` has been bundled for MacOS, and in a later commit for more operating systems as well. Regardless, it is recommended you install `ffmpeg` as a backup.
-
-
 2. Download the binary from the Releases tab, right click and run!
 3. Some settings are on the menu on the top right corner. To change all settings, edit the file found when pressing "Open config.json folder". Syntax for `config.json` can be found at [config.md](./config.md)
 
@@ -31,10 +29,6 @@ Q: *Why am I stuck on downloading the first song?*
 
 A: `ffmpeg` is not installed! Get it and make sure it's in your PATH.
 
-Q: *Why no Windows add-to-iTunes?*
-
-A: Add to iTunes on Windows is coming soon! I just need some time to figure out the correct directory for Windows iTunes.
-
 Q: *Will this support Spotify?*
 
 A: No. Spotify's API is too much of a hassle for me to deal with rn.
@@ -47,4 +41,5 @@ A: 😏
 If you for some inexplicable reason want to build this into a binary...
 1. Get PyInstaller
 2. Change the `binaries` section in `aMuseMent.spec` to point to your specific build of `ffmpeg`
+    - _You probably don't need to do this unless you have an ultra special build of ffmpeg_
 3. Run `pyinstaller aMuseMent.spec`
