@@ -10,11 +10,13 @@
 1. **IMPORTANT!** Get `ffmpeg` for your relevant operating system and add it to your PATH: https://www.ffmpeg.org/download.html
     - Note: As of commit `b5424d3`, `ffmpeg` has been bundled for MacOS, and in a later commit for more operating systems as well. Regardless, it is recommended you install `ffmpeg` as a backup.
 
+
 2. Download the binary from the Releases tab, right click and run!
 3. Some settings are on the menu on the top right corner. To change all settings, edit the file found when pressing "Open config.json folder". Syntax for `config.json` can be found at [config.md](./config.md)
 
 ## Usage (command line)
 1. Get `ffmpeg`, as above
+    - _Windows users only:_ After cloning the repo, download ffmpeg from [here](https://www.gyan.dev/ffmpeg/builds/), unzip and copy `ffmpeg.exe` to `./amuseLib/ffmpeg_win32`
 2. Get Python 3.10 or newer
 3. Clone / download repo to local system. Init venv (if needed)
 4. Download requirements.txt: python3.10 -m pip install -r requirements.txt
