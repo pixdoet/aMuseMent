@@ -179,15 +179,11 @@ def save_single_song(videoId: str, uiMode: bool):
                     singlePath=f"{finalSinglePath}",
                     osVersion="darwin",
                 )
-            else:
-                print(f"Add to iTunes coming soon! Songs saved at {finalSinglePath}")
-                if uiMode:
-                    return {
-                        "success": True,
-                        "message": f"Successfully downloaded song {songTitle}! Add to iTunes is coming to your playform soon",
-                    }
-                else:
-                    exit()
+            elif osVersion == "win32" or osVersion == "cygwin":
+                itunes.add_single_itunes(
+                    singlePath=f"{finalSinglePath}",
+                    osVersion="win32",
+                )
 
         else:
             print("Device does not support iTunes/Apple Music!")
