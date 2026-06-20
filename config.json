@@ -6,6 +6,12 @@
         "replace_slash_with": "-",
         "use_playlist_id_for_folder_name": true,
         "open_in_finder_after_download": true,
+        "cookie_options": {
+            "use_cookies": true,
+            "cookie_method": "browser",
+            "cookie_from_browser": "firefox",
+            "cookie_file": "./cookies.txt"
+        },
         "download_postprocessor_options": {
             "key": "FFmpegExtractAudio",
             "preferredcodec": "mp3",
