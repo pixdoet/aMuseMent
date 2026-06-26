@@ -1,17 +1,17 @@
 """
-download.py - Wrapper function for yt_dlp to download videos
+download.py - uses yt_dlp and ffmpeg to download/convert the video :)
+
+REWRITTEN TO SUPPORT COOKIES WDYM YT IS BLOCKING DOWNLOADS?
 """
 
-import config
-
 import os
+import pathlib
 import subprocess
 import yt_dlp
 
-import itunes  # for check_os_version
+import config
 
 configData = config.load_config()
-osVersion = itunes.check_os_version()
 
 
 def download_song(id: str, playlistId: str):
@@ -20,23 +20,33 @@ def download_song(id: str, playlistId: str):
 
     TODO - add download options to config.json
     """
-
-    download_options: dict = {
-        "extract_audio": True,
-        "format": "bestaudio",
-        "outtmpl": f"{config.resource_path(config.DEFAULT_SAVES_PATH)}/{playlistId}/%(id)s",
-        "no_cache_dir": True,
-        "force_ipv4": True,
-        "ffmpeg_location": config.resource_path(
-            configData["download_options"]["ffmpeg_path"][osVersion]
-        ),
+    # debug print out loc
+    print(
+        f"DEBUG: {config.resource_path(config.DEFAULT_SAVES_PATH)}/{playlistId}/%(id)s"
+    )
+    download_options = {
+        "extract_flat": "discard_in_playlist",
+        "ffmpeg_location": "/Volumes/Internal/Code/python/aMuseMent/amuseLib/ffmpeg_darwin",
+        "final_ext": "mp3",
+        "format": "bestaudio/best",
+        "fragment_retries": 10,
+        "ignoreerrors": "only_download",
+        "outtmpl": {"default": "%(id)s.%(ext)s"},
+        "paths": {
+            "home": f"{config.resource_path(config.DEFAULT_SAVES_PATH)}/{playlistId}"
+        },
         "postprocessors": [
             {
                 "key": "FFmpegExtractAudio",
+                "nopostoverwrites": False,
                 "preferredcodec": "mp3",
-                "preferredquality": "192",
-            }
+                "preferredquality": "5",
+            },
+            {"key": "FFmpegConcat", "only_multi_video": True, "when": "playlist"},
         ],
+        "retries": 10,
+        "warn_when_outdated": True,
+        "verbose": configData["download_options"]["ytdlp_verbose"],
     }
 
     # NEW: Use cookies
@@ -67,8 +77,12 @@ def download_song(id: str, playlistId: str):
         # debug
         print(download_options)
 
-    with yt_dlp.YoutubeDL() as video:
-        video.download(id)
+    # make dir before download i think
+    path = pathlib.Path(f"/Users/pixdoet/amusement/{playlistId}/")
+    path.mkdir(parents=True, exist_ok=True)
+
+    with yt_dlp.YoutubeDL(download_options) as video:
+        video.download(f"https://www.youtube.com/watch?v={id}")
         return True
 
 
