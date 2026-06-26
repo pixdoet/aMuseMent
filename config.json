@@ -6,6 +6,7 @@
         "replace_slash_with": "-",
         "use_playlist_id_for_folder_name": true,
         "open_in_finder_after_download": true,
+        "ytdlp_verbose": false,
         "cookie_options": {
             "use_cookies": true,
             "cookie_method": "browser",
@@ -18,12 +19,12 @@
             "preferredquality": "192"
         },
         "ffmpeg_path": {
-            "darwin": "./amuseLib/ffmpeg_darwin",
-            "win32": "./amuseLib/ffmpeg_win32/ffmpeg.exe",
-            "linux": "./amuseLib/ffmpeg_linux/ffmpeg"
+            "darwin": "amuseLib/ffmpeg_darwin",
+            "win32": "amuseLib/ffmpeg_win32/ffmpeg.exe",
+            "linux": "amuseLib/ffmpeg_linux/ffmpeg"
         },
         "youtubei_options": {
-            "client_version": "1.20241023.01.00",
+            "client_version": "1.20260623.13.00",
             "client_name": "WEB_REMIX"
         }
     },
