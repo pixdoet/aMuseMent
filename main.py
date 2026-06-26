@@ -83,8 +83,8 @@ def main_download():
             songFileName = songTitle.replace(
                 "/", configData["download_options"]["replace_slash_with"]
             )
-        
-        if songTitle.find("|"): # shld be windows only
+
+        if songTitle.find("|"):  # shld be windows only
             songFileName = songTitle.replace(
                 "|", configData["download_options"]["replace_slash_with"]
             )
