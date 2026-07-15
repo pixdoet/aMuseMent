@@ -20,10 +20,7 @@ def download_song(id: str, playlistId: str):
 
     TODO - add download options to config.json
     """
-    # debug print out loc
-    print(
-        f"DEBUG: {config.resource_path(config.DEFAULT_SAVES_PATH)}/{playlistId}/%(id)s"
-    )
+
     download_options = {
         "extract_flat": "discard_in_playlist",
         "ffmpeg_location": "/Volumes/Internal/Code/python/aMuseMent/amuseLib/ffmpeg_darwin",
@@ -74,15 +71,14 @@ def download_song(id: str, playlistId: str):
             case _:
                 raise ValueError
 
-        # debug
-        print(download_options)
-
     # make dir before download i think
-    path = pathlib.Path(f"/Users/pixdoet/amusement/{playlistId}/")
+    path = pathlib.Path(
+        f"{config.resource_path(config.DEFAULT_SAVES_PATH)}/{playlistId}/"
+    )
     path.mkdir(parents=True, exist_ok=True)
 
     with yt_dlp.YoutubeDL(download_options) as video:
-        video.download(f"https://www.youtube.com/watch?v={id}")
+        video.download(f"https://music.youtube.com/watch?v={id}")
         return True
 
 
