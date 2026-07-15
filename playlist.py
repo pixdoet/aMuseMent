@@ -59,6 +59,7 @@ def playlist_cleaner(playlistUrl: str, uiMode: bool):
                 or len(playlistUrl) == 36
                 or len(playlistUrl) == 41
                 or len(playlistUrl) == 43
+                or len(playlistUrl) == 13
             ):
                 playlistId = playlistUrl
 
@@ -93,7 +94,7 @@ def playlist_cleaner(playlistUrl: str, uiMode: bool):
 
     # start checking playlist id
     if playlistId.startswith("PL") or playlistId.startswith("VLPL"):
-        if len(playlistId) == 34:
+        if len(playlistId) == 34 or len(playlistId) == 13:
             playlistType = "playlist"
         elif len(playlistId) == 36:
             playlistId = playlistId[2:]
