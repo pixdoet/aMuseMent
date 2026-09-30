@@ -1,4 +1,4 @@
-#!/usr/bin/
+#!/usr/bin/env python3
 
 """
 aMuseMent - YTM to iTunes/AM conversion tool
@@ -9,13 +9,13 @@ Fully fledged with metadata!
 
 import sys
 
-from amusement import arguments, main, cleaner, save_single, about
+from amusement import amuse, arguments, cleaner, save_single, about
 
 
 def main():
     args = arguments.parser.parse_args()
     if len(sys.argv) <= 1:
-        main.main_download()
+        amuse.main_download()
 
     # -c --clean_saves
     elif args.clean_saves:
