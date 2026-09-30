@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
+if __name__ == "__main__":
+    print("""
+The file for running aMuseMent has been moved to ../amusement.py.
+Please update your configurations to reflect the new change.
+""")
+    exit()
 
-"""
-aMuseMent - YTM to iTunes/AM conversion tool
-Fully fledged with metadata!
-
-(C) 2024 Ian Hiew - pixdo.et at gmail.com
-"""
 
 # local imporT\
 import about
@@ -127,28 +127,3 @@ def main_download():
     print(f"Finished! Files can be found at {config.DEFAULT_SAVES_PATH}/{playlistId}")
 
 
-def main():
-    args = arguments.parser.parse_args()
-    if len(sys.argv) <= 1:
-        main_download()
-
-    # -c --clean_saves
-    elif args.clean_saves:
-        cleaner.wipe_all()
-        exit()
-
-    # -s --save_single
-    elif args.save_single:
-        print("Downloading in Single mode")
-        songId = input("Enter song ID (no url): ")
-        save_single.save_single_song(videoId=songId, uiMode=False)
-        exit()
-
-    # -ab --about
-    elif args.about:
-        about.print_about()
-        exit()
-
-
-if __name__ == "__main__":
-    main()
