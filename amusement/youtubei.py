@@ -14,6 +14,18 @@ NO_ALBUM_PLACEHOLDER_TEXT = configData["download_options"]["no_album_placeholder
 CLIENT_VERSION = configData["download_options"]["youtubei_options"]["client_version"]
 CLIENT_NAME = configData["download_options"]["youtubei_options"]["client_name"]
 
+YOUTUBEI_CONTEXT = {
+    "client": {
+        "hl": "en",
+        "gl": "MY",
+        "visitorData": "CgtqSnJ2akN1WTlDcyixxYm3BjIKCgJNWRIEGgAgPw%3D%3D",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:130.0) Gecko/20100101 Firefox/130.0,gzip(gfe)",
+        "clientName": CLIENT_NAME,
+        "clientVersion": CLIENT_VERSION,
+        "originalUrl": "https://music.youtube.com/",
+    },
+}
+
 
 def request_browse(browseId: str):
     """
@@ -25,17 +37,7 @@ def request_browse(browseId: str):
             "accept": "application/json",
         },
         json={
-            "context": {
-                "client": {
-                    "hl": "en",
-                    "gl": "MY",
-                    "visitorData": "CgtqSnJ2akN1WTlDcyixxYm3BjIKCgJNWRIEGgAgPw%3D%3D",
-                    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:130.0) Gecko/20100101 Firefox/130.0,gzip(gfe)",
-                    "clientName": CLIENT_NAME,
-                    "clientVersion": CLIENT_VERSION,
-                    "originalUrl": "https://music.youtube.com/",
-                },
-            },
+            "context": YOUTUBEI_CONTEXT,
             "browseId": f"VL{browseId}",
         },
     )
@@ -49,18 +51,7 @@ def request_next(videoId: str):
             "accept": "application/json",
         },
         json={
-            "context": {
-                "client": {
-                    "hl": "en",
-                    "gl": "MY",
-                    "visitorData": "CgtqSnJ2akN1WTlDcyixxYm3BjIKCgJNWRIEGgAgPw%3D%3D",
-                    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:130.0) Gecko/20100101 Firefox/130.0,gzip(gfe)",
-                    "clientName": CLIENT_NAME,
-                    "clientVersion": CLIENT_VERSION,
-                    "originalUrl": f"https://music.youtube.com/watch?v={videoId}",
-                },
-                "user": {"lockedSafetyMode": True},
-            },
+            "context": YOUTUBEI_CONTEXT,
             "isAudioOnly": True,
             "videoId": f"{videoId}",
             "index": 1,
