@@ -26,7 +26,7 @@ def main():
     elif args.save_single:
         print("Downloading in Single mode")
         songId = input("Enter song ID (no url): ")
-        save_single.save_single_song(videoId=songId, uiMode=False)
+        save_single.save_single_song(videoId=songId)
         exit()
 
     # -ab --about

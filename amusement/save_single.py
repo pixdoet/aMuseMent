@@ -8,11 +8,10 @@ Also: an all in one solution to downloading songs if you prefer, shld work alone
 Uses /next (wtf)
 """
 
-import requests
 import os
 import time
 
-from amusement import config, download, itunes, tags
+from amusement import config, download, itunes, tags, youtubei
 
 configData = config.load_config()
 
@@ -23,51 +22,8 @@ CLIENT_VERSION = configData["download_options"]["youtubei_options"]["client_vers
 CLIENT_NAME = configData["download_options"]["youtubei_options"]["client_name"]
 
 
-def request_next(videoId: str):
-    r = requests.post(
-        url="https://music.youtube.com/youtubei/v1/next",
-        headers={
-            "accept": "application/json",
-        },
-        json={
-            "context": {
-                "client": {
-                    "hl": "en",
-                    "gl": "MY",
-                    "visitorData": "CgtqSnJ2akN1WTlDcyixxYm3BjIKCgJNWRIEGgAgPw%3D%3D",
-                    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:130.0) Gecko/20100101 Firefox/130.0,gzip(gfe)",
-                    "clientName": CLIENT_NAME,
-                    "clientVersion": CLIENT_VERSION,
-                    "originalUrl": "https://music.youtube.com/",
-                },
-                "user": {"lockedSafetyMode": True},
-            },
-            "isAudioOnly": True,
-            "videoId": f"{videoId}",
-            "index": 1,
-            "watchEndpointMusicSupportedConfigs": {
-                "hasPersistentPlaylistPanel": True,
-                "musicVideoType": "MUSIC_VIDEO_TYPE_ATV",
-            },
-        },
-    )
-    return r
-
-
-def thumbnail_treatment(thumbnailLink: str):
-    """
-    thumbnail_treatment: change thumbnail url to upscale to 1024p
-    """
-    if len(thumbnailLink.split("=")) != 2:
-        return thumbnailLink
-    else:
-        oriThumbnail = thumbnailLink.split("=")[0]
-        newThumb = f"{oriThumbnail}=w1024"
-        return newThumb
-
-
 def get_song_info(videoId: str):
-    nextData = request_next(videoId=videoId).json()
+    nextData = youtubei.request_next(videoId=videoId).json()
 
     ytmCheck = nextData["playerOverlays"]["playerOverlayRenderer"][
         "browserMediaSession"
@@ -100,37 +56,30 @@ def get_song_info(videoId: str):
         else:
             noAlbumText = ""
 
+    finalSongInfo = {
+        "id": videoId,
+        "title": songDetails["title"]["runs"][0]["text"],
+        "artist": songDetails["longBylineText"]["runs"][0]["text"],
+        "thumbnail": youtubei.thumbnail_treatment(
+            songDetails["thumbnail"]["thumbnails"][0]["url"]
+        ),
+        "isYtmSong": isYtmSong,
+    }
+
     if isYtmSong:
-        finalSongInfo = {
-            "id": videoId,
-            "title": songDetails["title"]["runs"][0]["text"],
-            "artist": songDetails["longBylineText"]["runs"][0]["text"],
-            "album": songDetails["longBylineText"]["runs"][2]["text"],
-            "releaseTime": songDetails["longBylineText"]["runs"][4]["text"],
-            "thumbnail": thumbnail_treatment(
-                songDetails["thumbnail"]["thumbnails"][0]["url"]
-            ),
-            "isYtmSong": isYtmSong,
-        }
+        finalSongInfo["album"] = songDetails["longBylineText"]["runs"][2]["text"]
+        finalSongInfo["releaseTime"] = songDetails["longBylineText"]["runs"][4]["text"]
 
     else:
         # use placeholders for non-song
-        finalSongInfo = {
-            "id": videoId,
-            "title": songDetails["title"]["runs"][0]["text"],
-            "artist": songDetails["longBylineText"]["runs"][0]["text"],
-            "album": noAlbumText,
-            "releaseTime": "unknown",
-            "thumbnail": thumbnail_treatment(
-                songDetails["thumbnail"]["thumbnails"][0]["url"]
-            ),
-            "isYtmSong": isYtmSong,
-        }
+        finalSongInfo["album"] = "unknown"
+        finalSongInfo["releaseTime"] = noAlbumText
 
     return finalSongInfo
 
 
-def save_single_song(videoId: str, uiMode: bool):
+def save_single_song(videoId: str):
+    # TODO: make ts a class
     currentSong = get_song_info(videoId=videoId)
     songTitle = currentSong["title"]
     songArtist = currentSong["artist"]
@@ -158,6 +107,13 @@ def save_single_song(videoId: str, uiMode: bool):
         songThumbnailUrl=songThumbnailUrl,
     )
 
+    # safety check for illegal chars
+    if "/" in songTitle or "|" in songTitle or "\\" in songTitle:
+        songTitle = f"{videoId}"
+        print(
+            "Song title contains illegal filename characters (/, |, \\ etc.). Video ID used as song title."
+        )
+
     # rename song
     os.rename(
         f"{config.DEFAULT_SAVES_PATH}/singles/{videoId}.mp3",
@@ -184,13 +140,7 @@ def save_single_song(videoId: str, uiMode: bool):
 
         else:
             print("Device does not support iTunes/Apple Music!")
-            if uiMode:
-                return {
-                    "success": True,
-                    "message": f"Successfully downloaded song {songTitle}! Add to iTunes is not available on your platform :(",
-                }
-            else:
-                exit()
+            exit()
 
     if configData["download_options"]["open_in_finder_after_download"]:
         download.open_dir(
@@ -199,11 +149,4 @@ def save_single_song(videoId: str, uiMode: bool):
 
     print(f"Download finished! Song can be found in {finalSinglePath}")
 
-    if uiMode:
-        return {
-            "success": True,
-            "message": f"Successfully downloaded song {songTitle}!",
-        }
-
-
-# save_single_song(input("D: "))
+    return True
