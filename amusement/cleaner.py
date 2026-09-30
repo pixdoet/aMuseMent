@@ -2,10 +2,10 @@
 clean.py - removes files from ./saves directory
 """
 
-import config
-
 import time
 import shutil
+
+from amusement import config
 
 
 def wipe_all():

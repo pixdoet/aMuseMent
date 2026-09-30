@@ -1,9 +1,10 @@
 """
-    youtubei.py - requests youtubei for music info
+youtubei.py - requests youtubei for music info
 """
 
 import requests
-import config
+
+from amusement import config
 
 configData = config.load_config()
 

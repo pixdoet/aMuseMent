@@ -1,3 +1,5 @@
+#!/usr/bin/
+
 """
 aMuseMent - YTM to iTunes/AM conversion tool
 Fully fledged with metadata!
@@ -5,10 +7,10 @@ Fully fledged with metadata!
 (C) 2024 Ian Hiew - pixdo.et at gmail.com
 """
 
-import arguments
 import sys
 
-from amusement import main, cleaner, save_single, about
+from amusement import arguments, main, cleaner, save_single, about
+
 
 def main():
     args = arguments.parser.parse_args()

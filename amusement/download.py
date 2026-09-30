@@ -9,7 +9,7 @@ import pathlib
 import subprocess
 import yt_dlp
 
-import config
+from amusement import config
 
 configData = config.load_config()
 

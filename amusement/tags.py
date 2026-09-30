@@ -1,5 +1,5 @@
 """
-    tags.py - Tags the mp3 folders with info from YouTube Music
+tags.py - Tags the mp3 folders with info from YouTube Music
 """
 
 import eyed3

@@ -12,10 +12,7 @@ import requests
 import os
 import time
 
-import config
-import download
-import itunes
-import tags
+from amusement import config, download, itunes, tags
 
 configData = config.load_config()
 

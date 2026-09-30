@@ -20,7 +20,7 @@ def resource_path(relative_path):
 
 
 def load_config(configPath: str = "./config.json"):
-    with open(resource_path("./config.json"), "r") as configFile:
+    with open(resource_path(configPath), "r") as configFile:
         data = json.load(configFile)
 
     return data

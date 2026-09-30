@@ -6,22 +6,11 @@ Please update your configurations to reflect the new change.
 """)
     exit()
 
-
 # local imporT\
-import about
-import arguments
-import config
-import cleaner
-import download
-import itunes
-import playlist
-import save_single
-import tags
-import youtubei
+from amusement import config, download, itunes, playlist, save_single, tags, youtubei
 
 # global imporT (taxed)
 import os
-import sys
 
 configData = config.load_config()
 
@@ -125,5 +114,3 @@ def main_download():
             osVersion=osVersion, savesPath=f"{config.DEFAULT_SAVES_PATH}/{playlistId}"
         )
     print(f"Finished! Files can be found at {config.DEFAULT_SAVES_PATH}/{playlistId}")
-
-
