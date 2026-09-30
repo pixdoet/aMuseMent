@@ -2,9 +2,6 @@
 save_single.py - youtubei.py, but for single video ids
 
 Not used in playlist downloading due to redundancy and lag w/ multiple requests
-
-Also: an all in one solution to downloading songs if you prefer, shld work alone w/ minimum requirements
-
 Uses /next (wtf)
 """
 
@@ -126,17 +123,11 @@ def save_single_song(videoId: str):
     finalSinglePath = f"{config.DEFAULT_SAVES_PATH}/singles/{songTitle}.mp3"
 
     if configData["itunes_options"]["add_to_itunes"]:
-        if osVersion == "darwin" or osVersion == "win32" or osVersion == "cygwin":
-            if osVersion == "darwin":
-                itunes.add_single_itunes(
-                    singlePath=f"{finalSinglePath}",
-                    osVersion="darwin",
-                )
-            elif osVersion == "win32" or osVersion == "cygwin":
-                itunes.add_single_itunes(
-                    singlePath=f"{finalSinglePath}",
-                    osVersion="win32",
-                )
+        if osVersion == "darwin" or osVersion == "win32":
+            itunes.add_single_itunes(
+                singlePath=f"{finalSinglePath}",
+                osVersion=osVersion,
+            )
 
         else:
             print("Device does not support iTunes/Apple Music!")
