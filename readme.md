@@ -7,35 +7,30 @@
 - 🎵 Add to iTunes automatically!
 
 ## Usage (GUI)
-1. **IMPORTANT!** Get `ffmpeg` for your relevant operating system and add it to your PATH: https://www.ffmpeg.org/download.html
-    - Note: As of commit `b5424d3`, `ffmpeg` has been bundled for MacOS, and in a later commit for more operating systems as well. Regardless, it is recommended you install `ffmpeg` as a backup.
-2. Download the binary from the Releases tab, right click and run!
-3. Some settings are on the menu on the top right corner. To change all settings, edit the file found when pressing "Open config.json folder". Syntax for `config.json` can be found at [config.md](./config.md)
+> [!WARNING]
+> The previous Flet-based GUI has been deprecated. Development efforts will focus on stablilizing the CLI version first.
 
 ## Usage (command line)
-1. Get `ffmpeg`, as above
-    - _Windows users only:_ After cloning the repo, download ffmpeg from [here](https://www.gyan.dev/ffmpeg/builds/), unzip and copy `ffmpeg.exe` to `./amuseLib/ffmpeg_win32`
-2. Get Python 3.10 or newer
+1. Get `ffmpeg` for your relevant operating system and add it to your PATH: https://www.ffmpeg.org/download.html
+2. Get Python 3.14 or newer
 3. Clone / download repo to local system. Init venv (if needed)
-4. Download requirements.txt: python3.10 -m pip install -r requirements.txt
-5. Run `main.py` for the command line version or `amuse_ui.py` for the GUI version
+4. Download required libraries: `python3 -m pip install -r requirements.txt`
+5. Run the program: `python3 amusement.py`
 
-## IF THE APP FAILS TO RUN
-If you see the message "Apple could not verify ... is free of malware", open System Settings, search for Gatekeeper and click "Open Anyway" as shown below:
-![allow app 2 run](./app/gatekeeper.png)
 
 ## FAQ
-Q: *Why am I stuck on downloading the first song?*
-
-A: `ffmpeg` is not installed! Get it and make sure it's in your PATH.
 
 Q: *Will this support Spotify?*
 
 A: No. Spotify's API is too much of a hassle for me to deal with rn.
 
-Q: *What is **FAST MODE**?*
+Q: *Can the previous Flet-based GUI be used?*
 
-A: 😏
+A: You can use it if you know how to fix it, but no support/issues will be provided at this point...
+
+Q: *When is the GUI version going to return?*
+
+A: Hopefully within a month if I can stop procrastinating...?
 
 ## Building the app
 If you for some inexplicable reason want to build this into a binary...
