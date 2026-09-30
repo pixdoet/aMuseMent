@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+### SAFETY CHECK ###
 if __name__ == "__main__":
     print("""
 The file for running aMuseMent has been moved to ../amusement.py.
@@ -69,32 +69,22 @@ def main_download():
         )
 
         # safety check for if filename contains special chars (/, |), replace with usable char
-        if songTitle.find("/"):
-            songFileName = songTitle.replace(
-                "/", configData["download_options"]["replace_slash_with"]
-            )
-
-        if songTitle.find("|"):  # shld be windows only
-            songFileName = songTitle.replace(
-                "|", configData["download_options"]["replace_slash_with"]
-            )
-        # change filename to song title
-        os.rename(
-            f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songId}.mp3",
-            f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songFileName}.mp3",
-        )
-        if songFileName != songTitle:
+        if "/" in songTitle or "|" in songTitle or "\\" in songTitle:
             print(
-                f"Replaced character / with {configData['download_options']['replace_slash_with']}"
+                "Song title contains illegal filename characters (/, |, \\ etc.). Video ID used as song title."
             )
-            print(f"New filename is {songFileName}")
-        print(
-            f"Change song name to {config.DEFAULT_SAVES_PATH}/{playlistId}/{songFileName}.mp3"
-        )
+        else:
+            # change filename to song title
+            os.rename(
+                f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songId}.mp3",
+                f"{config.DEFAULT_SAVES_PATH}/{playlistId}/{songTitle}.mp3",
+            )
+            print(
+                f"Change song name to {config.DEFAULT_SAVES_PATH}/{playlistId}/{songTitle}.mp3"
+            )
 
     # add to itunes
     if configData["itunes_options"]["add_to_itunes"]:
-
         if osVersion == "darwin" or osVersion == "win32" or osVersion == "cygwin":
             if osVersion == "darwin":
                 itunes.add_to_itunes(playlistId=playlistId, osVersion="darwin")

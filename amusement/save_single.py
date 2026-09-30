@@ -107,16 +107,16 @@ def save_single_song(videoId: str):
 
     # safety check for illegal chars
     if "/" in songTitle or "|" in songTitle or "\\" in songTitle:
-        songTitle = f"{videoId}"
+        # songTitle = f"{videoId}"
         print(
             "Song title contains illegal filename characters (/, |, \\ etc.). Video ID used as song title."
         )
-
-    # rename song
-    os.rename(
-        f"{config.DEFAULT_SAVES_PATH}/singles/{videoId}.mp3",
-        f"{config.DEFAULT_SAVES_PATH}/singles/{songTitle}.mp3",
-    )
+    else:
+        # rename song
+        os.rename(
+            f"{config.DEFAULT_SAVES_PATH}/singles/{videoId}.mp3",
+            f"{config.DEFAULT_SAVES_PATH}/singles/{songTitle}.mp3",
+        )
     print(f"Finished downloading song: {songTitle}!")
 
     # add to itunes
