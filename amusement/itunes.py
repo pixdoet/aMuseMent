@@ -35,7 +35,7 @@ osVersion = check_os_version()
 if osVersion == "darwin" or osVersion == "win32":
     # grab home directory
     homeDir = pathlib.Path.home()
-    print(homeDir)
+    # print(homeDir)
     # get am directory
     amFolder = f"{homeDir}{configData[osVersion]['am_folder']}"
     amAlt = f"{homeDir}{configData[osVersion]['am_folder_alt']}"
