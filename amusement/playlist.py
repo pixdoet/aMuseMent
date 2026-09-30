@@ -32,7 +32,7 @@ def playlist_or_video(playlistUrl: str):
             continue
 
 
-def playlist_cleaner(playlistUrl: str, uiMode: bool):
+def playlist_cleaner(playlistUrl: str):
     """
     playlist_cleaner: playlist url safety check!
 
@@ -69,11 +69,7 @@ def playlist_cleaner(playlistUrl: str, uiMode: bool):
                 return playlistInfo
 
             else:
-                print("No valid playlist url/ID!")
-                if not uiMode:
-                    exit()
-                else:
-                    return False
+                raise ValueError("No valid playlist url/ID!")
 
     # check for ?v=
     elif "v=" in playlistUrl and "list=" in playlistUrl:
@@ -100,39 +96,25 @@ def playlist_cleaner(playlistUrl: str, uiMode: bool):
             playlistId = playlistId[2:]
             playlistType = "playlist"
         else:
-            print("Wrong playlist id? Normal playlists need to have 34/36 characters")
-            if not uiMode:
-                exit()
-            else:
-                return False
+            raise ValueError(
+                "Wrong playlist id? Normal playlists need to have 34/36 characters"
+            )
 
     elif playlistId.startswith("OLAK"):
         if len(playlistId) == 41:
             playlistType = "album"
         else:
-            print("Wrong album id? Normal albums need to have 41 characters")
-            if not uiMode:
-                exit()
-            else:
-                return False
+            raise ValueError("Wrong album id? Normal albums need to have 41 characters")
 
     elif playlistId.startswith("RD"):
         if len(playlistId) == 43:
             playlistType = "radio playlist"
         else:
-            print("Wrong radio id? Normal radios need to have 43 characters")
-            if not uiMode:
-                exit()
-            else:
-                return False
+            raise ValueError("Wrong radio id? Normal radios need to have 43 characters")
     else:
-        print(
+        raise ValueError(
             "Wrong playlist ID or playlist currently not supported! Supports PL, OLAK and RD playlists only."
         )
-        if not uiMode:
-            exit()
-        else:
-            return False
 
     playlistInfo = {"id": playlistId, "type": playlistType}
     return playlistInfo

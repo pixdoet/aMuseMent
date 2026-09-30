@@ -21,14 +21,14 @@ def main_download():
     # sanitize playlist url
     playlist_url = input("Enter playlist url/ID: ")
 
-    playlistInfo = playlist.playlist_cleaner(playlistUrl=playlist_url, uiMode=False)
+    playlistInfo = playlist.playlist_cleaner(playlistUrl=playlist_url)
 
     playlistId = playlistInfo["id"]
     playlistType = playlistInfo["type"]
 
     # check if single song mode
     if playlistType == "single_video":
-        save_single.save_single_song(videoId=playlistId, uiMode=False)
+        save_single.save_single_song(videoId=playlistId)
         exit()
 
     print(f"Downloading {playlistType} with id {playlistId}")
