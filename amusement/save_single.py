@@ -11,6 +11,7 @@ import time
 from amusement import config, download, itunes, tags, youtubei
 
 configData = config.load_config()
+osVersion = config.check_os_version()
 
 PLACEHOLDER_WHEN_NO_ALBUM = configData["download_options"]["placeholder_when_no_album"]
 NO_ALBUM_PLACEHOLDER_TEXT = configData["download_options"]["no_album_placeholder_text"]
@@ -119,7 +120,6 @@ def save_single_song(videoId: str):
     print(f"Finished downloading song: {songTitle}!")
 
     # add to itunes
-    osVersion = itunes.check_os_version()
     finalSinglePath = f"{config.DEFAULT_SAVES_PATH}/singles/{songTitle}.mp3"
 
     if configData["itunes_options"]["add_to_itunes"]:

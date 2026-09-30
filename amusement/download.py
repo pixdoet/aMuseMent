@@ -10,9 +10,9 @@ import subprocess
 import yt_dlp
 
 from amusement import config
-from amusement.itunes import check_os_version  # use for ffmpeg location
 
 configData = config.load_config()
+osVersion = config.check_os_version()
 
 
 def download_song(id: str, playlistId: str):
@@ -24,7 +24,7 @@ def download_song(id: str, playlistId: str):
 
     download_options = {
         "extract_flat": "discard_in_playlist",
-        "ffmpeg_location": f"{os.path.abspath(configData["download_options"]["ffmpeg_path"][check_os_version()])}",
+        "ffmpeg_location": f"{os.path.abspath(configData["download_options"]["ffmpeg_path"][osVersion])}",
         "final_ext": "mp3",
         "format": "bestaudio/best",
         "fragment_retries": 10,

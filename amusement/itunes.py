@@ -10,40 +10,16 @@ import shutil
 from amusement import config
 
 configData = config.load_config()
-configData = configData["itunes_options"]
-
-
-def check_os_version():
-    """
-    check_os_version: self explanatory, used to determine file paths
-    """
-    if sys.platform == "darwin":
-        return "darwin"
-    elif sys.platform == "win32" or sys.platform == "cygwin" or sys.platform == "msys":
-        print(
-            "Add to iTunes/Music is in beta for Windows! Some features might not work properly :)"
-        )
-        return "win32"
-    elif sys.platform == "linux" or sys.platform == "linux2":
-        return "linux"
-    else:
-        return "other"
-
-
-osVersion = check_os_version()
+configData = configData["itunes_options"]  # DO NOT REMOVE: shortcut for this file
+osVersion = config.check_os_version()
 
 if osVersion == "darwin" or osVersion == "win32":
-    # grab home directory
-    homeDir = pathlib.Path.home()
-    # print(homeDir)
+    homeDir = pathlib.Path.home()  # grab home directory
+
     # get am directory
     amFolder = f"{homeDir}{configData[osVersion]['am_folder']}"
     amAlt = f"{homeDir}{configData[osVersion]['am_folder_alt']}"
     itunesFolder = f"{homeDir}{configData[osVersion]['itunes_folder']}"
-
-
-def dbg_dir_data():
-    return {"am1": amFolder, "am2": amAlt, "it": itunesFolder}
 
 
 def use_am():

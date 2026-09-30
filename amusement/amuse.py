@@ -13,6 +13,7 @@ from amusement import config, download, itunes, playlist, save_single, tags, you
 import os
 
 configData = config.load_config()
+osVersion = config.check_os_version()
 
 
 # main download function / default mode
@@ -90,8 +91,6 @@ def main_download():
         print(
             f"Change song name to {config.DEFAULT_SAVES_PATH}/{playlistId}/{songFileName}.mp3"
         )
-
-    osVersion = itunes.check_os_version()
 
     # add to itunes
     if configData["itunes_options"]["add_to_itunes"]:
