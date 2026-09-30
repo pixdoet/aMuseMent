@@ -6,6 +6,7 @@ req.json
 Include/*
 Lib/*
 Scripts/*
+share/
 
 # General
 .DS_Store
