@@ -11,16 +11,10 @@ import time
 from amusement import config
 from amusement.download import download, tags
 from amusement.itunes import itunes
-from amusement.youtubei import next, parse, youtubei
+from amusement.youtubei import parse
 
 configData = config.load_config()
 osVersion = config.check_os_version()
-
-PLACEHOLDER_WHEN_NO_ALBUM = configData["download_options"]["placeholder_when_no_album"]
-NO_ALBUM_PLACEHOLDER_TEXT = configData["download_options"]["no_album_placeholder_text"]
-
-CLIENT_VERSION = configData["download_options"]["youtubei_options"]["client_version"]
-CLIENT_NAME = configData["download_options"]["youtubei_options"]["client_name"]
 
 
 def save_single_song(videoId: str):
@@ -82,7 +76,8 @@ def save_single_song(videoId: str):
 
     if configData["download_options"]["open_in_finder_after_download"]:
         download.open_dir(
-            osVersion=osVersion, savesPath=f"{config.DEFAULT_SAVES_PATH}/singles/"
+            osVersion=osVersion,
+            savesPath=f"{config.DEFAULT_SAVES_PATH}/singles/",
         )
 
     print(f"Download finished! Song can be found in {finalSinglePath}")

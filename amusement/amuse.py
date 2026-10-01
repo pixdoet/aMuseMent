@@ -14,7 +14,7 @@ import os
 
 from amusement.download import download, tags
 from amusement.itunes import itunes
-from amusement.youtubei import browse, playlist, parse, youtubei
+from amusement.youtubei import playlist, parse
 
 configData = config.load_config()
 osVersion = config.check_os_version()

@@ -3,7 +3,7 @@ parse.py - used to parse info from youtubei responses
 """
 
 from amusement import config
-from amusement.youtubei import youtubei, browse, next
+from amusement.youtubei import thumbnails, browse, next
 
 configData = config.load_config()
 
@@ -52,7 +52,7 @@ def get_song_info(videoId: str):
         "id": videoId,
         "title": songDetails["title"]["runs"][0]["text"],
         "artist": songDetails["longBylineText"]["runs"][0]["text"],
-        "thumbnail": youtubei.thumbnail_treatment(
+        "thumbnail": thumbnails.thumbnail_treatment(
             songDetails["thumbnail"]["thumbnails"][0]["url"]
         ),
         "isYtmSong": isYtmSong,
