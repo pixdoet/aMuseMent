@@ -9,7 +9,8 @@ Fully fledged with metadata!
 
 import sys
 
-from amusement import amuse, arguments, cleaner, save_single, about
+from amusement import amuse, arguments, save_single
+from amusement.misc import about, cleaner
 
 
 def main():
