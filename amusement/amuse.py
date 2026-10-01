@@ -14,7 +14,7 @@ import os
 
 from amusement.download import download, tags
 from amusement.itunes import itunes
-from amusement.youtubei import browse, playlist, youtubei
+from amusement.youtubei import browse, playlist, parse, youtubei
 
 configData = config.load_config()
 osVersion = config.check_os_version()
@@ -38,11 +38,13 @@ def main_download():
     print(f"Downloading {playlistType} with id {playlistId}")
 
     # fetch songs
-    browseResponse = browse.request_browse(browseId=playlistId)
+    # browseResponse = browse.request_browse(browseId=playlistId)
 
     # parse & download
+    parsedResponse = parse.get_playlist_info(playlistId=playlistId)
     print("List of songs: ")
-    parsedResponse = youtubei.parse_youtubei(browseResponse)
+    for song in parsedResponse:
+        print(f"{song["title"]} | {song["artist"]}")
 
     print("---------------------------------------")
 

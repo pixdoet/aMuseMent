@@ -2,8 +2,6 @@
 youtubei.py - requests youtubei for music info
 """
 
-import requests
-
 from amusement import config
 
 configData = config.load_config()
@@ -37,68 +35,3 @@ def thumbnail_treatment(thumbnailLink):
         oriThumbnail = thumbnailLink.split("=")[0]
         newThumb = f"{oriThumbnail}=w1024"
         return newThumb
-
-
-def parse_youtubei(ytResponse):
-    """
-    parse_youtubei: parse the youtubei info and return list of song metadata
-    """
-    resp = ytResponse.json()
-
-    playlistItems = []
-
-    for i in resp["contents"]["twoColumnBrowseResultsRenderer"]["secondaryContents"][
-        "sectionListRenderer"
-    ]["contents"][0]["musicPlaylistShelfRenderer"]["contents"]:
-        currentVidId = i["musicResponsiveListItemRenderer"]["playlistItemData"][
-            "videoId"
-        ]
-        # start getting info
-        songTitleAccessor = i["musicResponsiveListItemRenderer"]["flexColumns"][0][
-            "musicResponsiveListItemFlexColumnRenderer"
-        ]["text"]
-        songAuthorAccessor = i["musicResponsiveListItemRenderer"]["flexColumns"][1][
-            "musicResponsiveListItemFlexColumnRenderer"
-        ]["text"]
-        songAlbumAccessor = i["musicResponsiveListItemRenderer"]["flexColumns"][2][
-            "musicResponsiveListItemFlexColumnRenderer"
-        ]["text"]
-
-        # check if song album exist, if not use vid info
-        if len(songAlbumAccessor) <= 0:
-            # not a song!
-            currentSongTitle = songTitleAccessor["runs"][0]["text"]
-            currentSongAuthor = songAuthorAccessor["runs"][0]["text"]
-            if PLACEHOLDER_WHEN_NO_ALBUM:
-                currentSongAlbum = NO_ALBUM_PLACEHOLDER_TEXT
-            else:
-                currentSongAlbum = ""
-
-        else:
-            # is a song
-            currentSongTitle = songTitleAccessor["runs"][0]["text"]
-            currentSongAuthor = songAuthorAccessor["runs"][0]["text"]
-            currentSongAlbum = songAlbumAccessor["runs"][0]["text"]
-
-        currentThumbnail = thumbnail_treatment(
-            i["musicResponsiveListItemRenderer"]["thumbnail"]["musicThumbnailRenderer"][
-                "thumbnail"
-            ]["thumbnails"][0]["url"]
-        )
-
-        # print data (redundant?)
-        print(
-            f"Video ID: {currentVidId} | Title: {currentSongTitle} | Author: {currentSongAuthor} | Album: {currentSongAlbum}"
-        )
-
-        songInfoDict = {
-            "id": currentVidId,
-            "title": currentSongTitle,
-            "artist": currentSongAuthor,
-            "album": currentSongAlbum,
-            "thumbnail": currentThumbnail,
-            "isYtmSong": True,
-        }
-        playlistItems.append(songInfoDict)
-
-    return playlistItems

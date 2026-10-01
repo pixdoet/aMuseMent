@@ -11,7 +11,7 @@ import time
 from amusement import config
 from amusement.download import download, tags
 from amusement.itunes import itunes
-from amusement.youtubei import next, youtubei
+from amusement.youtubei import next, parse, youtubei
 
 configData = config.load_config()
 osVersion = config.check_os_version()
@@ -23,65 +23,9 @@ CLIENT_VERSION = configData["download_options"]["youtubei_options"]["client_vers
 CLIENT_NAME = configData["download_options"]["youtubei_options"]["client_name"]
 
 
-def get_song_info(videoId: str):
-    nextData = next.request_next(videoId=videoId).json()
-
-    ytmCheck = nextData["playerOverlays"]["playerOverlayRenderer"][
-        "browserMediaSession"
-    ]["browserMediaSessionRenderer"]
-
-    songDetails = nextData["contents"]["singleColumnMusicWatchNextResultsRenderer"][
-        "tabbedRenderer"
-    ]["watchNextTabbedResultsRenderer"]["tabs"][0]["tabRenderer"]["content"][
-        "musicQueueRenderer"
-    ][
-        "content"
-    ][
-        "playlistPanelRenderer"
-    ][
-        "contents"
-    ][
-        0
-    ][
-        "playlistPanelVideoRenderer"
-    ]
-
-    # check if ytm song
-    if "album" in ytmCheck:
-        isYtmSong = True
-    else:
-        # not song, stop getting album details
-        isYtmSong = False
-        if PLACEHOLDER_WHEN_NO_ALBUM:
-            noAlbumText = NO_ALBUM_PLACEHOLDER_TEXT
-        else:
-            noAlbumText = ""
-
-    finalSongInfo = {
-        "id": videoId,
-        "title": songDetails["title"]["runs"][0]["text"],
-        "artist": songDetails["longBylineText"]["runs"][0]["text"],
-        "thumbnail": youtubei.thumbnail_treatment(
-            songDetails["thumbnail"]["thumbnails"][0]["url"]
-        ),
-        "isYtmSong": isYtmSong,
-    }
-
-    if isYtmSong:
-        finalSongInfo["album"] = songDetails["longBylineText"]["runs"][2]["text"]
-        finalSongInfo["releaseTime"] = songDetails["longBylineText"]["runs"][4]["text"]
-
-    else:
-        # use placeholders for non-song
-        finalSongInfo["album"] = "unknown"
-        finalSongInfo["releaseTime"] = noAlbumText
-
-    return finalSongInfo
-
-
 def save_single_song(videoId: str):
     # TODO: make ts a class
-    currentSong = get_song_info(videoId=videoId)
+    currentSong = parse.get_song_info(videoId=videoId)
     songTitle = currentSong["title"]
     songArtist = currentSong["artist"]
     songAlbum = currentSong["album"]
