@@ -8,7 +8,10 @@ Uses /next (wtf)
 import os
 import time
 
-from amusement import config, download, itunes, tags, youtubei
+from amusement import config
+from amusement.download import download, tags
+from amusement.itunes import itunes
+from amusement.youtubei import next, youtubei
 
 configData = config.load_config()
 osVersion = config.check_os_version()
@@ -21,7 +24,7 @@ CLIENT_NAME = configData["download_options"]["youtubei_options"]["client_name"]
 
 
 def get_song_info(videoId: str):
-    nextData = youtubei.request_next(videoId=videoId).json()
+    nextData = next.request_next(videoId=videoId).json()
 
     ytmCheck = nextData["playerOverlays"]["playerOverlayRenderer"][
         "browserMediaSession"

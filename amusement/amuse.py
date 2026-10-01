@@ -7,10 +7,14 @@ Please update your configurations to reflect the new change.
     exit()
 
 # local imporT\
-from amusement import config, download, itunes, playlist, save_single, tags, youtubei
+from amusement import config, save_single
 
 # global imporT (taxed)
 import os
+
+from amusement.download import download, tags
+from amusement.itunes import itunes
+from amusement.youtubei import browse, playlist, youtubei
 
 configData = config.load_config()
 osVersion = config.check_os_version()
@@ -34,7 +38,7 @@ def main_download():
     print(f"Downloading {playlistType} with id {playlistId}")
 
     # fetch songs
-    browseResponse = youtubei.request_browse(browseId=playlistId)
+    browseResponse = browse.request_browse(browseId=playlistId)
 
     # parse & download
     print("List of songs: ")

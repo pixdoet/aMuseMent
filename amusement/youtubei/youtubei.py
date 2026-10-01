@@ -27,43 +27,6 @@ YOUTUBEI_CONTEXT = {
 }
 
 
-def request_browse(browseId: str):
-    """
-    request_browse: requests youtubei browse for raw data
-    """
-    r = requests.post(
-        url="https://music.youtube.com/youtubei/v1/browse",
-        headers={
-            "accept": "application/json",
-        },
-        json={
-            "context": YOUTUBEI_CONTEXT,
-            "browseId": f"VL{browseId}",
-        },
-    )
-    return r
-
-
-def request_next(videoId: str):
-    r = requests.post(
-        url="https://music.youtube.com/youtubei/v1/next",
-        headers={
-            "accept": "application/json",
-        },
-        json={
-            "context": YOUTUBEI_CONTEXT,
-            "isAudioOnly": True,
-            "videoId": f"{videoId}",
-            "index": 1,
-            "watchEndpointMusicSupportedConfigs": {
-                "hasPersistentPlaylistPanel": True,
-                "musicVideoType": "MUSIC_VIDEO_TYPE_ATV",
-            },
-        },
-    )
-    return r
-
-
 def thumbnail_treatment(thumbnailLink):
     """
     thumbnail_treatment: change thumbnail url to upscale to 1024p
