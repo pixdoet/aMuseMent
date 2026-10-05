@@ -72,7 +72,6 @@ def save_single_song(videoId: str):
 
         else:
             print("Device does not support iTunes/Apple Music!")
-            exit()
 
     if configData["download_options"]["open_in_finder_after_download"]:
         download.open_dir(

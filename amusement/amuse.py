@@ -100,8 +100,7 @@ def main_download():
 
         else:
             # y r u running dis on ur ms dos machine
-            print("Device does not support iTunes/Apple Music! Exiting now...")
-            exit()
+            print("Device does not support iTunes/Apple Music!")
 
     # open folder in Finder/explorer
     if configData["download_options"]["open_in_finder_after_download"]:
