@@ -40,9 +40,5 @@
             "am_folder": "/Music/iTunes/iTunes Media/Automatically Add to Music",
             "am_folder_alt": "/Music/iTunes/iTunes Media/Automatically Add to Music"
         }
-    },
-    "ui_options": {
-        "skip_status_update_wait_time": false,
-        "status_update_wait_seconds": 2
     }
 }
