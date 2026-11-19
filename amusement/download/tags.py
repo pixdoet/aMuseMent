@@ -21,6 +21,7 @@ def add_metadata(
         currentSongFile.tag.title = songTitle
         currentSongFile.tag.artist = songArtist
         currentSongFile.tag.album = songAlbum
+        currentSongFile.tag.album_artist = songArtist
         currentSongFile.tag.images.set(3, thumbnailData, "image/jpeg", "Desc")
 
         currentSongFile.tag.save()
